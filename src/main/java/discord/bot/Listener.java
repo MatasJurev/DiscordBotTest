@@ -6,11 +6,11 @@ import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
-import yahoofinance.Stock;
 import yahoofinance.YahooFinance;
+import yahoofinance.quotes.fx.FxQuote;
+import yahoofinance.quotes.fx.FxSymbols;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 
 public class Listener extends ListenerAdapter {
 
@@ -32,7 +32,7 @@ public class Listener extends ListenerAdapter {
         String msg = message.getContentDisplay();              //This returns a human readable version of the Message. Similar to
         // what you would see in the client.
 
-        boolean bot = author.isBot();                    //This boolean is useful to determine if the User that
+        boolean isBot = author.isBot();                    //This boolean is useful to determine if the User that
         // sent the Message is a BOT or not!
 
         if (event.isFromType(ChannelType.TEXT))         //If this message was sent to a Guild TextChannel
@@ -66,16 +66,17 @@ public class Listener extends ListenerAdapter {
             System.out.printf("[PRIV]<%s>: %s\n", author.getName(), msg);
         }
 
-        if(msg.equals("!test") && !bot) {
-            /*EmbedBuilder eb  = new EmbedBuilder();
-            eb.setTitle("Title");
-            eb.setFooter("Footer");*/
+        if(msg.equals("!test") && !isBot) {
+            EmbedBuilder eb  = new EmbedBuilder();
 
             try {
-                Stock tesla = YahooFinance.get("TSLA", true);
-                channel.sendMessage((CharSequence) tesla.getHistory()).queue();
-            } catch (Exception e) {
-                e.printStackTrace();
+                FxQuote currency = YahooFinance.getFx(FxSymbols.USDEUR);
+
+                eb.setTitle(currency.getSymbol());
+                eb.setFooter(String.valueOf(currency.getPrice()));
+                channel.sendMessage(eb.build()).queue();
+            } catch (IOException e) {
+                e.getStackTrace();
             }
 
         }
