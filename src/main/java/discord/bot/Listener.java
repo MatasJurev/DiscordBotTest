@@ -6,9 +6,10 @@ import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
+import utilities.StringUtils;
+import yahoofinance.Stock;
 import yahoofinance.YahooFinance;
 import yahoofinance.quotes.fx.FxQuote;
-import yahoofinance.quotes.fx.FxSymbols;
 
 import java.io.IOException;
 
@@ -73,28 +74,32 @@ public class Listener extends ListenerAdapter {
 
                 if (msg.equalsIgnoreCase("help")) {
                     eb.setTitle("Help");
-                    eb.setFooter("Usage: \"!currencyexchangeratio Currency1Currency2\" or \"!cer Currency1Currency2\"." +
+                    eb.setFooter("Usage: \"!cer Currency1 Currency2\" - gets exchange rate between two currencies." +
                             " Use \"!list currencies\" to see all available currencies");
                     channel.sendMessage(eb.build()).queue();
                 }
-                else if (msg.startsWith("currencyexchangeratio") || msg.startsWith("cer")) {
-                    msg = msg.split("\\s+")[1];
+                else if (msg.startsWith("cer")) {
+                    String[] splitted = msg.split("\\s+");
+                    msg = splitted[1] + splitted[2];
                     FxQuote currency = YahooFinance.getFx(msg.toUpperCase() + "=X");
 
                     String title  = currency.getSymbol();
-                    title = title.substring(0, title.length() - 2);
 
-                    eb.setTitle(title.substring(0, 3) + " to " + title.substring(3, 6) + " conversion ratio:");
+                    eb.setTitle(title.substring(0, 3) + " to " + title.substring(3, 6) + " exchange rate:");
                     eb.setFooter(String.valueOf(currency.getPrice()));
                     channel.sendMessage(eb.build()).queue();
                 }
+                else if (msg.startsWith("stock")) {
+                    msg = msg.split("\\s+")[1];
+                    Stock stock = YahooFinance.get(msg.toUpperCase());
 
+                    eb.setTitle(stock.getName());
+                    eb.setFooter(StringUtils.stockAsString(stock));
+                    channel.sendMessage(eb.build()).queue();
+                }
             }
         }
         catch (IOException e) {
-            e.printStackTrace();
-        }
-        catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -102,5 +107,6 @@ public class Listener extends ListenerAdapter {
     /*TODO:
        finish help command's response
        implement !list command
+       add more commands
     */
 }
