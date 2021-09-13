@@ -80,7 +80,7 @@ public class Listener extends ListenerAdapter {
         }
 
 
-       ///FOR STOCKS + CRYPTO
+       ///FOR STOCKS + CRYPTO, use ! XXX
         try {
             if (msg.startsWith("!") && !bot) {
                 msg = msg.substring(1).toLowerCase();
@@ -97,7 +97,7 @@ public class Listener extends ListenerAdapter {
         } catch (IOException ioException) {
             ioException.printStackTrace();
         }
-        ///FOR CURRENCIES
+        ///FOR CURRENCIES, use $ xxxXXX
         try {
             if (msg.startsWith("$") && !bot) {
                 msg = msg.substring(1).toLowerCase();
