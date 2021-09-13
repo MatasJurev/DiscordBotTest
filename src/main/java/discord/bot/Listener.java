@@ -89,7 +89,6 @@ public class Listener extends ListenerAdapter {
 
                 Stock stock = YahooFinance.get(msg.toUpperCase());
                 String titleString =  stock.getName().toString();
-                titleString = titleString.substring(0, titleString.length() - 2);
                 eb.setTitle("The Exchange rate of: " + titleString + " is: " + String.valueOf(stock.getQuote(true).getPrice()));
                 channel.sendMessage(eb.build()).queue();
             }
