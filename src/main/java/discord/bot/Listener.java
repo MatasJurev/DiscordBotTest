@@ -5,7 +5,11 @@ import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
+import yahoofinance.YahooFinance;
+import yahoofinance.quotes.fx.FxQuote;
+import yahoofinance.quotes.fx.FxSymbols;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -74,5 +78,21 @@ public class Listener extends ListenerAdapter {
         if(msg.equals("!display") && !bot) {
             channel.sendMessage(test.toString()).queue();
         }
+
+
+
+        if(msg.equals("!USDEUR") && !bot){
+            FxQuote currency = null;
+            try {
+                currency = YahooFinance.getFx(FxSymbols.USDEUR);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            System.out.println(currency);
+
+
+            channel.sendMessage("Price of " + currency ).queue();
+        }
+
     }
 }
