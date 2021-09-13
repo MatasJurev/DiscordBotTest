@@ -67,13 +67,13 @@ public class Listener extends ListenerAdapter {
         }
 
         try {
-            if (msg.startsWith("!") && !bot) {
+            if (msg.startsWith("$") && !bot) {
                 msg = msg.substring(1).toLowerCase();
                 EmbedBuilder eb = new EmbedBuilder();
 
                 if (msg.equalsIgnoreCase("help")) {
                     eb.setTitle("Help");
-                    eb.setFooter("Usage: \"!exchangeRatio Currency1 Currency2\"." +
+                    eb.setFooter("Usage: \"!currencyexchangeratio Currency1Currency2\" or \"!cer Currency1Currency2\"." +
                             " Use \"!list currencies\" to see all available currencies");
                     channel.sendMessage(eb.build()).queue();
                 }
@@ -81,7 +81,10 @@ public class Listener extends ListenerAdapter {
                     msg = msg.split("\\s+")[1];
                     FxQuote currency = YahooFinance.getFx(msg.toUpperCase() + "=X");
 
-                    eb.setTitle(currency.getSymbol());
+                    String title  = currency.getSymbol();
+                    title = title.substring(0, title.length() - 2);
+
+                    eb.setTitle(title.substring(0, 3) + " to " + title.substring(3, 6) + " conversion ratio:");
                     eb.setFooter(String.valueOf(currency.getPrice()));
                     channel.sendMessage(eb.build()).queue();
                 }
