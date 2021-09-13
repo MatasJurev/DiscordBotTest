@@ -1,5 +1,6 @@
 package discord.bot;
 
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -8,11 +9,11 @@ import org.jetbrains.annotations.NotNull;
 import yahoofinance.Stock;
 import yahoofinance.YahooFinance;
 import yahoofinance.quotes.fx.FxQuote;
-import yahoofinance.quotes.fx.FxSymbols;
 
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Currency;
 import java.util.List;
 
 public class Listener extends ListenerAdapter {
@@ -57,18 +58,15 @@ public class Listener extends ListenerAdapter {
             Member member = event.getMember();          //This Member that sent the message. Contains Guild specific information about the User!
 
             String name;
-            if (message.isWebhookMessage())
-            {
+            if (message.isWebhookMessage()) {
                 name = author.getName();                //If this is a Webhook message, then there is no Member associated
             }                                           // with the User, thus we default to the author for name.
-            else
-            {
+            else {
                 name = member.getEffectiveName();       //This will either use the Member's nickname if they have one,
             }                                           // otherwise it will default to their username. (User#getName())
 
             System.out.printf("(%s)[%s]<%s>: %s\n", guild.getName(), textChannel.getName(), name, msg);
-        }
-        else if (event.isFromType(ChannelType.PRIVATE)) //If this message was sent to a PrivateChannel
+        } else if (event.isFromType(ChannelType.PRIVATE)) //If this message was sent to a PrivateChannel
         {
             //The message was sent in a PrivateChannel.
             //In this example we don't directly use the privateChannel, however, be sure, there are uses for it!
@@ -77,42 +75,65 @@ public class Listener extends ListenerAdapter {
             System.out.printf("[PRIV]<%s>: %s\n", author.getName(), msg);
         }
 
-        if(msg.equals("!display") && !bot) {
+        else if (msg.equals("!display") && !bot) {
             channel.sendMessage(test.toString()).queue();
         }
 
 
 
-        if(msg.equals("!USDEUR") && !bot){
-            FxQuote currency = null;
-            try {
-                currency = YahooFinance.getFx(FxSymbols.USDEUR);
-            } catch (IOException e) {
-                e.printStackTrace();
+//       String whattoget = "AAPL";
+//        if (msg.startsWith("!") && !bot) {
+//            Stock stock = null;
+//            try {
+//                stock = YahooFinance.get(String.valueOf(whattoget));
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//            BigDecimal price = stock.getQuote().getPrice();
+//            String symbol = stock.getSymbol().toString();
+//            String name = stock.getName().toString();
+//            stock.print();
+//            channel.sendMessage("Price of " + symbol + " (" + name + ")" + " is: " + price).queue();
+//            System.out.println(whattoget);
+//        }
+        try {
+            if (msg.startsWith("!") && !bot) {
+                msg = msg.substring(1).toLowerCase();
+                EmbedBuilder eb = new EmbedBuilder();
+                msg = msg.split("\\s+")[1];
+
+                Stock stock = YahooFinance.get(msg.toUpperCase());
+                String titleString =  stock.getName().toString();
+                titleString = titleString.substring(0, titleString.length() - 2);
+                eb.setTitle("The Exchange rate of: " + titleString + " is: " + String.valueOf(stock.getQuote(true).getPrice()));
+                channel.sendMessage(eb.build()).queue();
             }
-            System.out.println(currency);
 
-
-            channel.sendMessage("Price of " + currency ).queue();
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
         }
 
-        String whattoget = "BTC-USD";
-        if(msg.equals("!"+whattoget) && !bot){
-            Stock stock = null;
-            try {
-                stock = YahooFinance.get(whattoget);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            BigDecimal price = stock.getQuote().getPrice();
-            stock.print();
-            System.out.println(price);
+        try {
+            if (msg.startsWith("$") && !bot) {
+                msg = msg.substring(1).toLowerCase();
+                EmbedBuilder eb = new EmbedBuilder();
+                msg = msg.split("\\s+")[1];
 
+                    FxQuote currency = YahooFinance.getFx(msg.toUpperCase() + "=X");
+                    String titleString =  currency.getSymbol();
+                    titleString = titleString.substring(0, titleString.length() - 2);
+                    eb.setTitle("The Exchange rate of: " + titleString + " is: " + String.valueOf(currency.getPrice()));
+                    channel.sendMessage(eb.build()).queue();
+                }
 
-            channel.sendMessage("Price is: " + price ).queue();
+            } catch (IOException ioException) {
+            ioException.printStackTrace();
         }
-
 
 
     }
+
+
 }
+
+
