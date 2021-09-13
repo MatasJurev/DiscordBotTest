@@ -1,26 +1,21 @@
 package discord.bot;
 
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
+import yahoofinance.Stock;
+import yahoofinance.YahooFinance;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.IOException;
+import java.math.BigDecimal;
 
 public class Listener extends ListenerAdapter {
 
-    List<String> test = new ArrayList<>();
-
     @Override
     public void onReady(@NotNull ReadyEvent event) {
-        test.add("String1");
-        test.add("String1");
-        test.add("String1");
-        test.add("String1");
-        test.add("String1");
-
         System.out.println("Logged in as: " + event.getJDA().getSelfUser().getAsTag());
     }
 
@@ -66,13 +61,23 @@ public class Listener extends ListenerAdapter {
         {
             //The message was sent in a PrivateChannel.
             //In this example we don't directly use the privateChannel, however, be sure, there are uses for it!
-            PrivateChannel privateChannel = event.getPrivateChannel();
+            //PrivateChannel privateChannel = event.getPrivateChannel();
 
             System.out.printf("[PRIV]<%s>: %s\n", author.getName(), msg);
         }
 
-        if(msg.equals("!display") && !bot) {
-            channel.sendMessage(test.toString()).queue();
+        if(msg.equals("!test") && !bot) {
+            /*EmbedBuilder eb  = new EmbedBuilder();
+            eb.setTitle("Title");
+            eb.setFooter("Footer");*/
+
+            try {
+                Stock tesla = YahooFinance.get("TSLA", true);
+                channel.sendMessage((CharSequence) tesla.getHistory()).queue();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
         }
     }
 }
