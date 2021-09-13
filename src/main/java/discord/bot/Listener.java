@@ -32,7 +32,7 @@ public class Listener extends ListenerAdapter {
         String msg = message.getContentDisplay();              //This returns a human readable version of the Message. Similar to
         // what you would see in the client.
 
-        boolean isBot = author.isBot();                    //This boolean is useful to determine if the User that
+        boolean bot = author.isBot();                    //This boolean is useful to determine if the User that
         // sent the Message is a BOT or not!
 
         if (event.isFromType(ChannelType.TEXT))         //If this message was sent to a Guild TextChannel
@@ -66,19 +66,38 @@ public class Listener extends ListenerAdapter {
             System.out.printf("[PRIV]<%s>: %s\n", author.getName(), msg);
         }
 
-        if(msg.equals("!test") && !isBot) {
-            EmbedBuilder eb  = new EmbedBuilder();
+        try {
+            if (msg.startsWith("!") && !bot) {
+                msg = msg.substring(1).toLowerCase();
+                EmbedBuilder eb = new EmbedBuilder();
 
-            try {
-                FxQuote currency = YahooFinance.getFx(FxSymbols.USDEUR);
+                if (msg.equalsIgnoreCase("help")) {
+                    eb.setTitle("Help");
+                    eb.setFooter("Usage: \"!exchangeRatio Currency1 Currency2\"." +
+                            " Use \"!list currencies\" to see all available currencies");
+                    channel.sendMessage(eb.build()).queue();
+                }
+                else if (msg.startsWith("currencyexchangeratio") || msg.startsWith("cer")) {
+                    msg = msg.split("\\s+")[1];
+                    FxQuote currency = YahooFinance.getFx(msg.toUpperCase() + "=X");
 
-                eb.setTitle(currency.getSymbol());
-                eb.setFooter(String.valueOf(currency.getPrice()));
-                channel.sendMessage(eb.build()).queue();
-            } catch (IOException e) {
-                e.getStackTrace();
+                    eb.setTitle(currency.getSymbol());
+                    eb.setFooter(String.valueOf(currency.getPrice()));
+                    channel.sendMessage(eb.build()).queue();
+                }
+
             }
-
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
         }
     }
+
+    /*TODO:
+       finish help command's response
+       implement !list command
+    */
 }
