@@ -5,11 +5,13 @@ import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
+import yahoofinance.Stock;
 import yahoofinance.YahooFinance;
 import yahoofinance.quotes.fx.FxQuote;
 import yahoofinance.quotes.fx.FxSymbols;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -93,6 +95,24 @@ public class Listener extends ListenerAdapter {
 
             channel.sendMessage("Price of " + currency ).queue();
         }
+
+        String whattoget = "BTC-USD";
+        if(msg.equals("!"+whattoget) && !bot){
+            Stock stock = null;
+            try {
+                stock = YahooFinance.get(whattoget);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            BigDecimal price = stock.getQuote().getPrice();
+            stock.print();
+            System.out.println(price);
+
+
+            channel.sendMessage("Price is: " + price ).queue();
+        }
+
+
 
     }
 }
