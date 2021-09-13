@@ -80,7 +80,7 @@ public class Listener extends ListenerAdapter {
         }
 
 
-       ///FOR STOCKS + CRYPTRO
+       ///FOR STOCKS + CRYPTO
         try {
             if (msg.startsWith("!") && !bot) {
                 msg = msg.substring(1).toLowerCase();
