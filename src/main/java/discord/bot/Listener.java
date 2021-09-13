@@ -80,22 +80,7 @@ public class Listener extends ListenerAdapter {
         }
 
 
-
-//       String whattoget = "AAPL";
-//        if (msg.startsWith("!") && !bot) {
-//            Stock stock = null;
-//            try {
-//                stock = YahooFinance.get(String.valueOf(whattoget));
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//            BigDecimal price = stock.getQuote().getPrice();
-//            String symbol = stock.getSymbol().toString();
-//            String name = stock.getName().toString();
-//            stock.print();
-//            channel.sendMessage("Price of " + symbol + " (" + name + ")" + " is: " + price).queue();
-//            System.out.println(whattoget);
-//        }
+       ///FOR STOCKS + CRYPTRO
         try {
             if (msg.startsWith("!") && !bot) {
                 msg = msg.substring(1).toLowerCase();
@@ -112,7 +97,7 @@ public class Listener extends ListenerAdapter {
         } catch (IOException ioException) {
             ioException.printStackTrace();
         }
-
+        ///FOR CURRENCIES
         try {
             if (msg.startsWith("$") && !bot) {
                 msg = msg.substring(1).toLowerCase();
