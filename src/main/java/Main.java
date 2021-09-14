@@ -8,4 +8,13 @@ public class Main {
         DiscordBot.init();
     }
 
+    /*TODO:
+       finish help command's response
+       implement !list command
+       add more commands
+       improve UI
+       get and display stock history
+       create database and use it as a main information source
+    */
+
 }

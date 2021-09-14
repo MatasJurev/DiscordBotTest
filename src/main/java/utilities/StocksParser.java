@@ -1,6 +1,5 @@
 package utilities;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -8,6 +7,11 @@ import java.util.List;
 public class StocksParser {
 
     public static String[] getSymbols(String data) {
+
+        /*
+        TODO: optimize the use of lists and arrays
+         */
+
         String[] split = data.split("[\":,{}]");
         List<String> parsedData = new LinkedList();
         List<String> answerList = new LinkedList();

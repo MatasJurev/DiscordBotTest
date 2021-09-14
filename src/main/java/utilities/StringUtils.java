@@ -15,16 +15,9 @@ public class StringUtils {
 
         sb.append("Price: ");
         sb.append(quote.getPrice());
-        sb.append(", year low: ");
-        sb.append(quote.getYearLow());
-        sb.append(", year high: ");
-        sb.append(quote.getYearHigh());
+        sb.append(" USD");
         sb.append(", change: ");
-        sb.append(quote.getChange());
-        sb.append(", currency: ");
-        sb.append(stock.getCurrency());
-        sb.append(", bid: ");
-        sb.append(quote.getBid());
+        sb.append(quote.getChange() + "%");
 
         return sb.toString();
     }
@@ -35,18 +28,12 @@ public class StringUtils {
 
         sb.append("Name: ");
         sb.append(stock.getName());
+        sb.append(" [" + stock.getSymbol() + "]");
         sb.append(", price: ");
         sb.append(quote.getPrice());
-        sb.append(", year low: ");
-        sb.append(quote.getYearLow());
-        sb.append(", year high: ");
-        sb.append(quote.getYearHigh());
+        sb.append(" USD");
         sb.append(", change: ");
-        sb.append(quote.getChange());
-        sb.append(", currency: ");
-        sb.append(stock.getCurrency());
-        sb.append(", bid: ");
-        sb.append(quote.getBid());
+        sb.append(quote.getChange() + "%");
 
         return sb.toString();
     }
@@ -57,21 +44,20 @@ public class StringUtils {
 
         sb.append("Price: ");
         sb.append(quote.getPrice());
+        sb.append(" USD");
         sb.append(", year low: ");
         sb.append(quote.getYearLow());
         sb.append(", year high: ");
         sb.append(quote.getYearHigh());
         sb.append(", change: ");
         sb.append(quote.getChange());
-        sb.append(", currency: ");
-        sb.append(stock.getCurrency());
 
         return sb.toString();
     }
 
     public static String[] getTopStocks() throws IOException {
         WebClient client = new WebClient();
-        String baseUrl = "https://api.nasdaq.com/api/screener/stocks?tableonly=true&limit=5&exchange=NASDAQ";
+        String baseUrl = "https://api.nasdaq.com/api/screener/stocks?tableonly=true&limit=" + 10 + "&exchange=NASDAQ";
 
         client.getOptions().setJavaScriptEnabled(false);
         client.getOptions().setCssEnabled(false);

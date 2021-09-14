@@ -12,7 +12,7 @@ import yahoofinance.YahooFinance;
 import yahoofinance.quotes.fx.FxQuote;
 
 import java.io.IOException;
-import java.util.Map;
+import java.util.Collection;
 
 public class Listener extends ListenerAdapter {
 
@@ -108,15 +108,17 @@ public class Listener extends ListenerAdapter {
                 }
                 else if(msg.startsWith("top stocks")) {
                     String[] symbols = StringUtils.getTopStocks();
-                    Map<String, Stock> stocks = YahooFinance.get(symbols);
+                    Collection<Stock> stocks = YahooFinance.get(symbols).values();
                     StringBuilder sb = new StringBuilder();
 
-                    for(Stock stock : stocks.values()) {
-                        sb.append(StringUtils.stockAsStringWithName(stock));
-                        sb.append("\n\n");
+                    for(Stock stock : stocks) {
+                        if(stock.getName() != null) {
+                            sb.append(StringUtils.stockAsStringWithName(stock));
+                            sb.append("\n\n");
+                        }
                     }
 
-                    eb.setTitle("Top stocks:");
+                    eb.setTitle("Top 10 stocks:");
                     eb.setFooter(sb.toString());
                     channel.sendMessage(eb.build()).queue();
                 }
@@ -126,12 +128,4 @@ public class Listener extends ListenerAdapter {
             e.printStackTrace();
         }
     }
-
-    /*TODO:
-       finish help command's response
-       implement !list command
-       add more commands
-       improve UI
-       get and display stock history
-    */
 }
