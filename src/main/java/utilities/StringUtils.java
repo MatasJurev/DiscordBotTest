@@ -24,4 +24,22 @@ public class StringUtils {
 
         return sb.toString();
     }
+
+    public static String cryptoAsString(Stock stock) {
+        StringBuilder sb = new StringBuilder();
+        StockQuote quote = stock.getQuote();
+
+        sb.append("Price: ");
+        sb.append(quote.getPrice());
+        sb.append(", year low: ");
+        sb.append(quote.getYearLow());
+        sb.append(", year high: ");
+        sb.append(quote.getYearHigh());
+        sb.append(", change: ");
+        sb.append(quote.getChange());
+        sb.append(", currency: ");
+        sb.append(stock.getCurrency());
+
+        return sb.toString();
+    }
 }

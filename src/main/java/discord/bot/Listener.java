@@ -97,6 +97,14 @@ public class Listener extends ListenerAdapter {
                     eb.setFooter(StringUtils.stockAsString(stock));
                     channel.sendMessage(eb.build()).queue();
                 }
+                else if (msg.startsWith("crypto")) {
+                    msg = msg.split("\\s+")[1];
+                    Stock stock = YahooFinance.get(msg.toUpperCase()+"-USD");
+
+                    eb.setTitle(stock.getName());
+                    eb.setFooter(StringUtils.cryptoAsString(stock));
+                    channel.sendMessage(eb.build()).queue();
+                }
             }
         }
         catch (IOException e) {
@@ -108,5 +116,7 @@ public class Listener extends ListenerAdapter {
        finish help command's response
        implement !list command
        add more commands
+       improve UI
+       get and display stock history
     */
 }
