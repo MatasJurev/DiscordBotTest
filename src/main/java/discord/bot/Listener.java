@@ -112,6 +112,7 @@ public class Listener extends ListenerAdapter {
             } catch (IOException ioException) {
             ioException.printStackTrace();
         }
+        ///////////#Crypto call
         try {
         if (msg.startsWith("#Crypto") && !bot){
             EmbedBuilder eb = new EmbedBuilder();
@@ -136,7 +137,7 @@ public class Listener extends ListenerAdapter {
         } catch (IOException ioException) {
             ioException.printStackTrace();
         }
-
+        ///////////#Stocks call
         try {
             if (msg.startsWith("#Stocks") && !bot){
                 EmbedBuilder eb = new EmbedBuilder();
@@ -161,10 +162,10 @@ public class Listener extends ListenerAdapter {
         } catch (IOException ioException) {
             ioException.printStackTrace();
         }
+        ///////////#Forex call
         try {
             if (msg.startsWith("#Forex") && !bot){
                 EmbedBuilder eb = new EmbedBuilder();
-
                 String[] symbols = new String[] {"EURUSD=X", "GBPUSD=X", "USDJPY=X","AUDUSD=X","USDCAD=X"};
                 Map<String, FxQuote> currencies = YahooFinance.getFx(symbols);
                 FxQuote stock1 = currencies.get(symbols[0]);
@@ -173,7 +174,6 @@ public class Listener extends ListenerAdapter {
                 FxQuote stock4 = currencies.get(symbols[3]);
                 FxQuote stock5 = currencies.get(symbols[4]);
                 eb.setTitle("The Top Currency Prices right now: ");
-                
                  String text =(
                  (stock1.getSymbol().substring(0, stock1.getSymbol().length() - 2)) + " trades @ " + stock1.getPrice() + System.lineSeparator() + 
                  (stock2.getSymbol().substring(0, stock2.getSymbol().length() - 2)) + " trades @ " + stock2.getPrice() + System.lineSeparator() + 
