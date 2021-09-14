@@ -7,6 +7,7 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 import utilities.StringUtils;
+import utilities.WebscrapingUtils;
 import yahoofinance.Stock;
 import yahoofinance.YahooFinance;
 import yahoofinance.quotes.fx.FxQuote;
@@ -107,7 +108,7 @@ public class Listener extends ListenerAdapter {
                     channel.sendMessage(eb.build()).queue();
                 }
                 else if(msg.startsWith("top stocks")) {
-                    String[] symbols = StringUtils.getTopStocks();
+                    String[] symbols = WebscrapingUtils.getTopStocks();
                     Collection<Stock> stocks = YahooFinance.get(symbols).values();
                     StringBuilder sb = new StringBuilder();
 
@@ -122,10 +123,21 @@ public class Listener extends ListenerAdapter {
                     eb.setFooter(sb.toString());
                     channel.sendMessage(eb.build()).queue();
                 }
+                else if(msg.startsWith("top crypto")) {
+                    StringBuilder sb = new StringBuilder();
+
+
+
+                    eb.setTitle("Top 10 crypto:");
+                    eb.setFooter(sb.toString());
+                    channel.sendMessage(eb.build()).queue();
+                }
             }
         }
         catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+
 }
