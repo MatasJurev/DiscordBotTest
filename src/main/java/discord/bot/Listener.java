@@ -12,6 +12,7 @@ import yahoofinance.YahooFinance;
 import yahoofinance.quotes.fx.FxQuote;
 
 import java.io.IOException;
+import java.util.Map;
 
 public class Listener extends ListenerAdapter {
 
@@ -99,10 +100,24 @@ public class Listener extends ListenerAdapter {
                 }
                 else if (msg.startsWith("crypto")) {
                     msg = msg.split("\\s+")[1];
-                    Stock stock = YahooFinance.get(msg.toUpperCase()+"-USD");
+                    Stock stock = YahooFinance.get(msg.toUpperCase() + "-USD");
 
                     eb.setTitle(stock.getName());
                     eb.setFooter(StringUtils.cryptoAsString(stock));
+                    channel.sendMessage(eb.build()).queue();
+                }
+                else if(msg.startsWith("top stocks")) {
+                    String[] symbols = StringUtils.getTopStocks();
+                    Map<String, Stock> stocks = YahooFinance.get(symbols);
+                    StringBuilder sb = new StringBuilder();
+
+                    for(Stock stock : stocks.values()) {
+                        sb.append(StringUtils.stockAsStringWithName(stock));
+                        sb.append("\n\n");
+                    }
+
+                    eb.setTitle("Top stocks:");
+                    eb.setFooter(sb.toString());
                     channel.sendMessage(eb.build()).queue();
                 }
             }
