@@ -15,6 +15,8 @@ import yahoofinance.quotes.fx.FxQuote;
 import java.awt.*;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
@@ -77,9 +79,9 @@ public class Listener extends ListenerAdapter {
         }
 
 
-       ///FOR STOCKS + CRYPTO, use ! XXX
+       ///FOR STOCKS/CRYPTO, use $ XXX
         try {
-            if (msg.startsWith("!") && !bot) {
+            if (msg.startsWith("$") && !bot) {
                 msg = msg.substring(1).toLowerCase();
                 EmbedBuilder eb = new EmbedBuilder();
                 msg = msg.split("\\s+")[1];
@@ -96,7 +98,7 @@ public class Listener extends ListenerAdapter {
             ioException.printStackTrace();
         }
 
-        /// GET HISTORY COMMAND
+        /// GET HISTORY STOCKS/CRYPTO COMMAND
         try {
             if (msg.startsWith("History") && !bot) {
                 msg = msg.substring(1).toLowerCase();
@@ -106,19 +108,19 @@ public class Listener extends ListenerAdapter {
 
                 StringBuilder footer = new StringBuilder();
                 List<HistoricalQuote> history=stock.getHistory();
+                footer.append(System.lineSeparator());
+                footer.append("DATE-----PRICE-----LOW-----HIGH");
+                footer.append(System.lineSeparator());
                 for(HistoricalQuote quote:history) {
-                    footer.append(quote.getSymbol());
-                    footer.append(" Traded on "+convertDate(quote.getDate()));
-                    footer.append(" @ " + quote.getClose());
+                    footer.append(convertDate(quote.getDate()));
+                    footer.append("  |  " + quote.getClose().setScale(2, RoundingMode.HALF_UP));
+                    footer.append("  |  " + quote.getLow().setScale(2, RoundingMode.HALF_UP));
+                    footer.append("  |  " + quote.getHigh().setScale(2, RoundingMode.HALF_UP));
                     footer.append(System.lineSeparator());
                 }
 
-                    String titleString =  stock.getName();
-
-                System.out.println(footer);
-
-                eb.setTitle("Price History of " + titleString);
-                eb.setFooter(""+footer);
+                eb.setTitle("Monthly Price History of " + stock.getName()+" ("+stock.getSymbol()+")");
+                eb.setFooter(String.valueOf(footer));
                 eb.setColor(Color.red);
                 channel.sendMessage(eb.build()).queue();
             }
@@ -127,11 +129,9 @@ public class Listener extends ListenerAdapter {
             ioException.printStackTrace();
         }
 
-
-
-        ///FOR CURRENCIES, use $ xxxXXX
+        ///FOR CURRENCIES, use ! xxxXXX
         try {
-            if (msg.startsWith("$") && !bot) {
+            if (msg.startsWith("!") && !bot) {
                 msg = msg.substring(1).toLowerCase();
                 EmbedBuilder eb = new EmbedBuilder();
                 msg = msg.split("\\s+")[1];
@@ -222,6 +222,24 @@ public class Listener extends ListenerAdapter {
             }
         } catch (IOException ioException) {
             ioException.printStackTrace();
+        }
+
+        if (msg.startsWith("Hello") && !bot) {
+            msg = msg.substring(1).toLowerCase();
+            EmbedBuilder eb = new EmbedBuilder();
+            //msg = msg.split("\\s+")[1];
+
+            StringBuilder footer = new StringBuilder();
+            footer.append("oooo    oooo    88oooo88"+System.lineSeparator());
+            footer.append(" 888      888          888    "+System.lineSeparator());
+            footer.append(" 88888888           888    "+System.lineSeparator());
+            footer.append(" 888      888          888    "+System.lineSeparator());
+            footer.append("oooo    oooo    88oooo88"+System.lineSeparator());
+            footer.append("");
+
+            eb.setFooter(String.valueOf(footer));
+            eb.setColor(Color.red);
+            channel.sendMessage(eb.build()).queue();
         }
 
     }
