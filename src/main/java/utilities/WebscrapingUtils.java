@@ -18,7 +18,20 @@ public class WebscrapingUtils {
         Page page = client.getPage(baseUrl);
         String content = page.getWebResponse().getContentAsString();
 
-        return StocksParser.getSymbols(content);
+        return StocksDataParser.getSymbols(content);
     }
 
+    public static String[] getTopCryptos() throws IOException {
+        WebClient client = new WebClient();
+        String baseUrl = "https://coinmarketcap.com";
+
+        client.getOptions().setJavaScriptEnabled(false);
+        client.getOptions().setCssEnabled(false);
+        //client.getOptions().setUseInsecureSSL(true);
+
+        Page page = client.getPage(baseUrl);
+        String content = page.getWebResponse().getContentAsString();
+
+        return CryptoDataParser.getSymbols(content);
+    }
 }

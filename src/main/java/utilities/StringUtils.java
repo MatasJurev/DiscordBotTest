@@ -34,9 +34,9 @@ public class StringUtils {
         return sb.toString();
     }
 
-    public static String cryptoAsString(Stock stock) {
+    public static String cryptoAsString(Stock crypto) {
         StringBuilder sb = new StringBuilder();
-        StockQuote quote = stock.getQuote();
+        StockQuote quote = crypto.getQuote();
 
         sb.append("Price: ");
         sb.append(quote.getPrice());
@@ -46,7 +46,23 @@ public class StringUtils {
         sb.append(", year high: ");
         sb.append(quote.getYearHigh());
         sb.append(", change: ");
-        sb.append(quote.getChange());
+        sb.append(quote.getChange() + "%");
+
+        return sb.toString();
+    }
+
+    public static String cryptoAsStringWithName(Stock crypto) {
+
+        StringBuilder sb = new StringBuilder();
+        StockQuote quote = crypto.getQuote();
+
+        sb.append("Name: ");
+        sb.append(crypto.getName());
+        sb.append(", price: ");
+        sb.append(quote.getPrice());
+        sb.append(" USD");
+        sb.append(", change: ");
+        sb.append(quote.getChange() + "%");
 
         return sb.toString();
     }

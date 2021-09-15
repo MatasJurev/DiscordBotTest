@@ -6,6 +6,7 @@ import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
+import utilities.CryptoDataParser;
 import utilities.StringUtils;
 import utilities.WebscrapingUtils;
 import yahoofinance.Stock;
@@ -14,6 +15,7 @@ import yahoofinance.quotes.fx.FxQuote;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.List;
 
 public class Listener extends ListenerAdapter {
 
@@ -123,12 +125,18 @@ public class Listener extends ListenerAdapter {
                     eb.setFooter(sb.toString());
                     channel.sendMessage(eb.build()).queue();
                 }
-                else if(msg.startsWith("top crypto")) {
+                else if(msg.startsWith("top cryptos")) {
                     StringBuilder sb = new StringBuilder();
+                    String[] symbols = WebscrapingUtils.getTopCryptos();
+                    Collection<Stock> cryptos = YahooFinance.get(symbols).values();
+                    cryptos = CryptoDataParser.getTop10(cryptos);
 
+                    for(Stock crypto : cryptos) {
+                        sb.append(StringUtils.cryptoAsStringWithName(crypto));
+                        sb.append("\n\n");
+                    }
 
-
-                    eb.setTitle("Top 10 crypto:");
+                    eb.setTitle("Top 10 cryptocurrencies by price:");
                     eb.setFooter(sb.toString());
                     channel.sendMessage(eb.build()).queue();
                 }
@@ -138,6 +146,4 @@ public class Listener extends ListenerAdapter {
             e.printStackTrace();
         }
     }
-
-
 }

@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-public class StocksParser {
+public class StocksDataParser {
 
     public static String[] getSymbols(String data) {
 
