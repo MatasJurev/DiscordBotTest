@@ -23,7 +23,7 @@ public class WebscrapingUtils {
 
     public static String[] getTopCryptos() throws IOException {
         WebClient client = new WebClient();
-        String baseUrl = "https://coinmarketcap.com";
+        String baseUrl = "https://api-pub.bitfinex.com/v2/conf/pub:list:currency";
 
         client.getOptions().setJavaScriptEnabled(false);
         client.getOptions().setCssEnabled(false);

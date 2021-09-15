@@ -3,14 +3,12 @@ package utilities;
 import yahoofinance.Stock;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class CryptoDataParser {
 
     public static String[] getSymbols(String data) {
 
-        //String[] split = data.split("[\":,{}<>\\-]");
-        String[] split = data.split("[-]");
+        String[] split = data.split("[\\[\\]\":,{}<>=]");
         List<String> parsedData = new LinkedList();
         List<String> answerList = new LinkedList();
 
@@ -18,15 +16,11 @@ public class CryptoDataParser {
         parsedData.removeIf(item -> item == null || "".equals(item));
 
         for(int i=0; i<parsedData.size(); i++) {
-
-            if(parsedData.get(i).equalsIgnoreCase("symbol")) {
-                answerList.add(parsedData.get(i+4).toUpperCase() + "-USD");
-                System.out.println(parsedData.get(i+4).toUpperCase());
-            }
+            answerList.add(parsedData.get(i).toUpperCase() + "-USD");
         }
 
         //remove possible duplicates
-        answerList = answerList.stream().distinct().collect(Collectors.toList());
+        //answerList = answerList.stream().distinct().collect(Collectors.toList());
 
         String[] answer = new String[answerList.size()];
         answer = answerList.toArray(answer);
@@ -34,13 +28,12 @@ public class CryptoDataParser {
         return answer;
     }
 
-    public static Collection<Stock> getTop10(Collection<Stock> cryptos) {
-        List top10 = new ArrayList(cryptos);
+    public static List getTop10(Collection<Stock> cryptos) {
+        List<Stock> top10 = new ArrayList(cryptos);
 
-        top10.removeIf(item -> ((Stock)item).getName() == null || "".equals(((Stock)item).getName()));
-        top10.sort(new CryptoComparator());
-        top10 = top10.subList(0, 10);
+        top10.removeIf(item -> item.getName() == null || "".equals(item.getName()));
+        top10.sort(new CryptoComparator().reversed());
 
-        return top10;
+        return top10.subList(0, 10);
     }
 }

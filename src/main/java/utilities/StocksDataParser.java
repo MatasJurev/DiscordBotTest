@@ -12,7 +12,8 @@ public class StocksDataParser {
         TODO: optimize the use of lists and arrays
          */
 
-        String[] split = data.split("[\":,{}]");
+        //String[] split = data.split("[\":,{}]");
+        String[] split = data.split("[\\[\\]\":,{}<>=]");
         List<String> parsedData = new LinkedList();
         List<String> answerList = new LinkedList();
 

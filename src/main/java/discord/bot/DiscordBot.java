@@ -13,5 +13,4 @@ public class DiscordBot {
                 .setActivity(Activity.watching("currencies and cryptocurrencies"))
                 .build();
     }
-
 }
