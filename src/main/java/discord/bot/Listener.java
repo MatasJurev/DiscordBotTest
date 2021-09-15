@@ -8,15 +8,16 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 import yahoofinance.Stock;
 import yahoofinance.YahooFinance;
+import yahoofinance.histquotes.HistoricalQuote;
+import yahoofinance.histquotes.Interval;
 import yahoofinance.quotes.fx.FxQuote;
 
 import java.awt.*;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Currency;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
 public class Listener extends ListenerAdapter {
 
@@ -94,6 +95,40 @@ public class Listener extends ListenerAdapter {
         } catch (IOException ioException) {
             ioException.printStackTrace();
         }
+
+        /// GET HISTORY COMMAND
+        try {
+            if (msg.startsWith("History") && !bot) {
+                msg = msg.substring(1).toLowerCase();
+                EmbedBuilder eb = new EmbedBuilder();
+                msg = msg.split("\\s+")[1];
+                Stock stock = YahooFinance.get(msg.toUpperCase());
+
+                StringBuilder footer = new StringBuilder();
+                List<HistoricalQuote> history=stock.getHistory();
+                for(HistoricalQuote quote:history) {
+                    footer.append(quote.getSymbol());
+                    footer.append(" Traded on "+convertDate(quote.getDate()));
+                    footer.append(" @ " + quote.getClose());
+                    footer.append(System.lineSeparator());
+                }
+
+                    String titleString =  stock.getName();
+
+                System.out.println(footer);
+
+                eb.setTitle("Price History of " + titleString);
+                eb.setFooter(""+footer);
+                eb.setColor(Color.red);
+                channel.sendMessage(eb.build()).queue();
+            }
+
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+        }
+
+
+
         ///FOR CURRENCIES, use $ xxxXXX
         try {
             if (msg.startsWith("$") && !bot) {
@@ -190,7 +225,11 @@ public class Listener extends ListenerAdapter {
         }
 
     }
-
+    private String convertDate(Calendar cal){
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        String formatDate=format.format(cal.getTime());
+        return formatDate;
+    }
 
 }
 
