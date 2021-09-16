@@ -203,11 +203,12 @@ public class Listener extends ListenerAdapter {
                 if (msg.startsWith("options") && !bot) {
                     eb.setTitle("Possible Options are:");
                     StringBuilder footer = new StringBuilder();
-                    footer.append("$xxx ...for Stocks/Crypto "+System.lineSeparator());
-                    footer.append("!xxx ...for Currencies"+System.lineSeparator());
-                    footer.append("History xxx ...to get monthly price history  "+System.lineSeparator());
-                    footer.append("top stocks ... to get data about top 10 stocks  "+System.lineSeparator());
-                    footer.append("top cryptos ... to get data about top 10 cryptos  "+System.lineSeparator());
+                    footer.append("$stock XXX...for Stocks "+System.lineSeparator());
+                    footer.append("$crypto XXX...for Crypto "+System.lineSeparator());
+                    footer.append("$forex XXX...for Currencies"+System.lineSeparator());
+                    footer.append("$history XXX ...to get monthly price history  "+System.lineSeparator());
+                    footer.append("$top stocks ... to get data about top 10 stocks  "+System.lineSeparator());
+                    footer.append("$top cryptos ... to get data about top 10 cryptos  "+System.lineSeparator());
                     eb.setFooter(String.valueOf(footer));
                     eb.setColor(Color.red);
                     channel.sendMessage(eb.build()).queue();
