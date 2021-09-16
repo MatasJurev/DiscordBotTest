@@ -5,7 +5,9 @@ import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.interactions.components.Button;
 import org.jetbrains.annotations.NotNull;
+import org.w3c.dom.ls.LSOutput;
 import utilities.CryptoDataParser;
 import utilities.StringUtils;
 import utilities.WebscrapingUtils;
@@ -175,31 +177,6 @@ public class Listener extends ListenerAdapter {
                     ioException.printStackTrace();
                 }
 
-                try {
-                    if (msg.startsWith("forex") && !bot){
-                        String[] symbols = new String[] {"EURUSD=X", "GBPUSD=X", "USDJPY=X","AUDUSD=X","USDCAD=X"};
-                        Map<String, FxQuote> currencies = YahooFinance.getFx(symbols);
-
-                        FxQuote stock1 = currencies.get(symbols[0]);
-                        FxQuote stock2 = currencies.get(symbols[1]);
-                        FxQuote stock3 = currencies.get(symbols[2]);
-                        FxQuote stock4 = currencies.get(symbols[3]);
-                        FxQuote stock5 = currencies.get(symbols[4]);
-                        eb.setTitle("The Top Currency Prices right now: ");
-                        String text =(
-                                (stock1.getSymbol().substring(0, stock1.getSymbol().length() - 2)) + " trades @ " + stock1.getPrice() + System.lineSeparator() +
-                                        (stock2.getSymbol().substring(0, stock2.getSymbol().length() - 2)) + " trades @ " + stock2.getPrice() + System.lineSeparator() +
-                                        (stock3.getSymbol().substring(0, stock3.getSymbol().length() - 2)) + " trades @ " + stock3.getPrice() + System.lineSeparator() +
-                                        (stock4.getSymbol().substring(0, stock4.getSymbol().length() - 2)) + " trades @ " + stock4.getPrice() + System.lineSeparator() +
-                                        (stock5.getSymbol().substring(0, stock5.getSymbol().length() - 2)) + " trades @ " + stock5.getPrice()
-                        );
-                        eb.setFooter(text);
-                        eb.setColor(Color.red);
-                        channel.sendMessage(eb.build()).queue();;
-                    }
-                } catch (IOException ioException) {
-                    ioException.printStackTrace();
-                }
                 if (msg.startsWith("options") && !bot) {
                     eb.setTitle("Possible Options are:");
                     StringBuilder footer = new StringBuilder();
