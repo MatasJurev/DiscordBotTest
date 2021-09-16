@@ -1,26 +1,26 @@
 package discord.bot;
 
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
+import utilities.CryptoDataParser;
+import utilities.StringUtils;
+import utilities.WebscrapingUtils;
+import yahoofinance.Stock;
+import yahoofinance.YahooFinance;
+import yahoofinance.quotes.fx.FxQuote;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.IOException;
+import java.util.Collection;
+
 
 public class Listener extends ListenerAdapter {
 
-    List<String> test = new ArrayList<>();
-
     @Override
     public void onReady(@NotNull ReadyEvent event) {
-        test.add("String1");
-        test.add("String1");
-        test.add("String1");
-        test.add("String1");
-        test.add("String1");
-
         System.out.println("Logged in as: " + event.getJDA().getSelfUser().getAsTag());
     }
 
@@ -66,13 +66,84 @@ public class Listener extends ListenerAdapter {
         {
             //The message was sent in a PrivateChannel.
             //In this example we don't directly use the privateChannel, however, be sure, there are uses for it!
-            PrivateChannel privateChannel = event.getPrivateChannel();
+            //PrivateChannel privateChannel = event.getPrivateChannel();
 
             System.out.printf("[PRIV]<%s>: %s\n", author.getName(), msg);
         }
 
-        if(msg.equals("!display") && !bot) {
-            channel.sendMessage(test.toString()).queue();
+        try {
+            if (msg.startsWith("$") && !bot) {
+                msg = msg.substring(1).toLowerCase();
+                EmbedBuilder eb = new EmbedBuilder();
+
+                if (msg.equalsIgnoreCase("help")) {
+                    eb.setTitle("Help");
+                    eb.setFooter("Usage: \"!cer Currency1 Currency2\" - gets exchange rate between two currencies." +
+                            " Use \"!list currencies\" to see all available currencies");
+                    channel.sendMessage(eb.build()).queue();
+                }
+                else if (msg.startsWith("cer")) {
+                    String[] splitted = msg.split("\\s+");
+                    msg = splitted[1] + splitted[2];
+                    FxQuote currency = YahooFinance.getFx(msg.toUpperCase() + "=X");
+
+                    String title  = currency.getSymbol();
+
+                    eb.setTitle(title.substring(0, 3) + " to " + title.substring(3, 6) + " exchange rate:");
+                    eb.setFooter(String.valueOf(currency.getPrice()));
+                    channel.sendMessage(eb.build()).queue();
+                }
+                else if (msg.startsWith("stock")) {
+                    msg = msg.split("\\s+")[1];
+                    Stock stock = YahooFinance.get(msg.toUpperCase());
+
+                    eb.setTitle(stock.getName());
+                    eb.setFooter(StringUtils.stockAsString(stock));
+                    channel.sendMessage(eb.build()).queue();
+                }
+                else if (msg.startsWith("crypto")) {
+                    msg = msg.split("\\s+")[1];
+                    Stock stock = YahooFinance.get(msg.toUpperCase() + "-USD");
+
+                    eb.setTitle(stock.getName());
+                    eb.setFooter(StringUtils.cryptoAsString(stock));
+                    channel.sendMessage(eb.build()).queue();
+                }
+                else if(msg.startsWith("top stocks")) {
+                    String[] symbols = WebscrapingUtils.getTopStocks();
+                    Collection<Stock> stocks = YahooFinance.get(symbols).values();
+                    StringBuilder sb = new StringBuilder();
+
+                    for(Stock stock : stocks) {
+                        if(stock.getName() != null) {
+                            sb.append(StringUtils.stockAsStringWithName(stock));
+                            sb.append("\n\n");
+                        }
+                    }
+
+                    eb.setTitle("Top 10 stocks:");
+                    eb.setFooter(sb.toString());
+                    channel.sendMessage(eb.build()).queue();
+                }
+                else if(msg.startsWith("top cryptos")) {
+                    StringBuilder sb = new StringBuilder();
+                    String[] symbols = WebscrapingUtils.getTopCryptos();
+                    Collection<Stock> cryptos = YahooFinance.get(symbols).values();
+                    cryptos = CryptoDataParser.getTop10(cryptos);
+
+                    for(Stock crypto : cryptos) {
+                        sb.append(StringUtils.cryptoAsStringWithName(crypto));
+                        sb.append("\n\n");
+                    }
+
+                    eb.setTitle("Top 10 cryptocurrencies by price:");
+                    eb.setFooter(sb.toString());
+                    channel.sendMessage(eb.build()).queue();
+                }
+            }
+        }
+        catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
