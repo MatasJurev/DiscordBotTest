@@ -109,7 +109,7 @@ public class Listener extends ListenerAdapter {
                 StringBuilder footer = new StringBuilder();
                 List<HistoricalQuote> history=stock.getHistory();
                 footer.append(System.lineSeparator());
-                footer.append("DATE-----PRICE-----LOW-----HIGH");
+                footer.append("DATE------PRICE------LOW------HIGH");
                 footer.append(System.lineSeparator());
                 for(HistoricalQuote quote:history) {
                     footer.append(convertDate(quote.getDate()));
@@ -148,7 +148,7 @@ public class Listener extends ListenerAdapter {
             ioException.printStackTrace();
         }
         ///////////#Crypto call
-        try {
+     /*   try {
         if (msg.startsWith("#Crypto") && !bot){
             EmbedBuilder eb = new EmbedBuilder();
             String[] symbols = new String[] {"BTC-USD", "ETH-USD", "ADA-USD","BNB-USD","XRP-USD"};
@@ -171,9 +171,9 @@ public class Listener extends ListenerAdapter {
         }
         } catch (IOException ioException) {
             ioException.printStackTrace();
-        }
+        }*/
         ///////////#Stocks call
-        try {
+    /*    try {
             if (msg.startsWith("#Stocks") && !bot){
                 EmbedBuilder eb = new EmbedBuilder();
                 String[] symbols = new String[] {"AAPL", "MSFT", "GOOG","AMZN","FB"};
@@ -196,9 +196,9 @@ public class Listener extends ListenerAdapter {
             }
         } catch (IOException ioException) {
             ioException.printStackTrace();
-        }
+        }*/
         ///////////#Forex call
-        try {
+      /*  try {
             if (msg.startsWith("#Forex") && !bot){
                 EmbedBuilder eb = new EmbedBuilder();
                 String[] symbols = new String[] {"EURUSD=X", "GBPUSD=X", "USDJPY=X","AUDUSD=X","USDCAD=X"};
@@ -222,7 +222,7 @@ public class Listener extends ListenerAdapter {
             }
         } catch (IOException ioException) {
             ioException.printStackTrace();
-        }
+        }*/
 
         if (msg.startsWith("Hello") && !bot) {
             msg = msg.substring(1).toLowerCase();
