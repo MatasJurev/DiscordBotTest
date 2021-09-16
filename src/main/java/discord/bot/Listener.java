@@ -13,6 +13,7 @@ import yahoofinance.Stock;
 import yahoofinance.YahooFinance;
 import yahoofinance.quotes.fx.FxQuote;
 
+import java.awt.*;
 import java.io.IOException;
 import java.util.Collection;
 
@@ -75,6 +76,7 @@ public class Listener extends ListenerAdapter {
             if (msg.startsWith("$") && !bot) {
                 msg = msg.substring(1).toLowerCase();
                 EmbedBuilder eb = new EmbedBuilder();
+                eb.setColor(Color.red);
 
                 if (msg.equalsIgnoreCase("help")) {
                     eb.setTitle("Help");
@@ -112,32 +114,26 @@ public class Listener extends ListenerAdapter {
                 else if(msg.startsWith("top stocks")) {
                     String[] symbols = WebscrapingUtils.getTopStocks();
                     Collection<Stock> stocks = YahooFinance.get(symbols).values();
-                    StringBuilder sb = new StringBuilder();
 
                     for(Stock stock : stocks) {
                         if(stock.getName() != null) {
-                            sb.append(StringUtils.stockAsStringWithName(stock));
-                            sb.append("\n\n");
+                            eb.addField(stock.getName(), StringUtils.cryptoAsString(stock), false);
                         }
                     }
 
                     eb.setTitle("Top 10 stocks:");
-                    eb.setFooter(sb.toString());
                     channel.sendMessage(eb.build()).queue();
                 }
                 else if(msg.startsWith("top cryptos")) {
-                    StringBuilder sb = new StringBuilder();
                     String[] symbols = WebscrapingUtils.getTopCryptos();
                     Collection<Stock> cryptos = YahooFinance.get(symbols).values();
                     cryptos = CryptoDataParser.getTop10(cryptos);
 
                     for(Stock crypto : cryptos) {
-                        sb.append(StringUtils.cryptoAsStringWithName(crypto));
-                        sb.append("\n\n");
+                        eb.addField(crypto.getName(), StringUtils.cryptoAsString(crypto), false);
                     }
 
                     eb.setTitle("Top 10 cryptocurrencies by price:");
-                    eb.setFooter(sb.toString());
                     channel.sendMessage(eb.build()).queue();
                 }
             }
