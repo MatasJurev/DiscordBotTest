@@ -198,11 +198,12 @@ public class Listener extends ListenerAdapter {
             ioException.printStackTrace();
         }*/
         ///////////#Forex call
-      /*  try {
+        try {
             if (msg.startsWith("#Forex") && !bot){
                 EmbedBuilder eb = new EmbedBuilder();
                 String[] symbols = new String[] {"EURUSD=X", "GBPUSD=X", "USDJPY=X","AUDUSD=X","USDCAD=X"};
                 Map<String, FxQuote> currencies = YahooFinance.getFx(symbols);
+
                 FxQuote stock1 = currencies.get(symbols[0]);
                 FxQuote stock2 = currencies.get(symbols[1]);
                 FxQuote stock3 = currencies.get(symbols[2]);
@@ -222,7 +223,23 @@ public class Listener extends ListenerAdapter {
             }
         } catch (IOException ioException) {
             ioException.printStackTrace();
-        }*/
+        }
+
+        if (msg.startsWith("Options") && !bot) {
+            msg = msg.substring(1).toLowerCase();
+            EmbedBuilder eb = new EmbedBuilder();
+            eb.setTitle("Possible Options are:");
+            StringBuilder footer = new StringBuilder();
+            footer.append("$xxx ...for Stocks/Crypto "+System.lineSeparator());
+            footer.append("!xxx ...for Currencies"+System.lineSeparator());
+            footer.append("History xxx ...to get monthly price history  "+System.lineSeparator());
+            footer.append("top stocks ... to get data about top 10 stocks  "+System.lineSeparator());
+            footer.append("top cryptos ... to get data about top 10 cryptos  "+System.lineSeparator());
+
+            eb.setFooter(String.valueOf(footer));
+            eb.setColor(Color.red);
+            channel.sendMessage(eb.build()).queue();
+        }
 
         if (msg.startsWith("Hello") && !bot) {
             msg = msg.substring(1).toLowerCase();
@@ -235,7 +252,7 @@ public class Listener extends ListenerAdapter {
             footer.append(" 88888888           888    "+System.lineSeparator());
             footer.append(" 888      888          888    "+System.lineSeparator());
             footer.append("oooo    oooo    88oooo88"+System.lineSeparator());
-            footer.append("");
+
 
             eb.setFooter(String.valueOf(footer));
             eb.setColor(Color.red);
