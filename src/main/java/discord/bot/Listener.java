@@ -5,25 +5,20 @@ import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import net.dv8tion.jda.api.interactions.components.Button;
 import org.jetbrains.annotations.NotNull;
-import org.w3c.dom.ls.LSOutput;
 import utilities.CryptoDataParser;
 import utilities.StringUtils;
 import utilities.WebscrapingUtils;
 import yahoofinance.Stock;
 import yahoofinance.YahooFinance;
 import yahoofinance.histquotes.HistoricalQuote;
-import yahoofinance.histquotes.Interval;
 import yahoofinance.quotes.fx.FxQuote;
 
 import java.awt.*;
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.math.MathContext;
 import java.math.RoundingMode;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import static utilities.StringUtils.convertDate;
@@ -110,6 +105,21 @@ public class Listener extends ListenerAdapter {
                     eb.setFooter(StringUtils.stockAsString(stock));
                     channel.sendMessage(eb.build()).queue();
                 }
+                else if (msg.startsWith("dividend")) {
+                     msg = msg.split("\\s+")[1];
+                     Stock stock = YahooFinance.get(msg.toUpperCase());
+                     eb.setTitle(stock.getName()+" ("+stock.getSymbol()+") " + "Dividend:");
+                     eb.setFooter(StringUtils.dividendString(stock));
+                     channel.sendMessage(eb.build()).queue();
+                 }
+                else if (msg.startsWith("eps")) {
+                     msg = msg.split("\\s+")[1];
+                     Stock stock = YahooFinance.get(msg.toUpperCase());
+                     eb.setTitle(stock.getName()+" ("+stock.getSymbol()+") " + "EPS:");
+                     eb.setFooter("Earnings Per Share: "+(stock.getStats().getEps())+"$");
+                     channel.sendMessage(eb.build()).queue();
+                 }
+
                 else if (msg.startsWith("crypto")) {
                     msg = msg.split("\\s+")[1];
                     Stock stock = YahooFinance.get(msg.toUpperCase() + "-USD");
@@ -149,7 +159,6 @@ public class Listener extends ListenerAdapter {
                     eb.setFooter(sb.toString());
                     channel.sendMessage(eb.build()).queue();
                 }
-                /////////////////////////////
                 try {
                     if (msg.startsWith("history") && !bot) {
                         msg = msg.split("\\s+")[1];
@@ -190,7 +199,6 @@ public class Listener extends ListenerAdapter {
                     eb.setColor(Color.red);
                     channel.sendMessage(eb.build()).queue();
                 }
-
                 if (msg.startsWith("hello") && !bot) {
                     msg = msg.substring(1).toLowerCase();
                     StringBuilder footer = new StringBuilder();

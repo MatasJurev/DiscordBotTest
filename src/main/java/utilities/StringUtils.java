@@ -1,8 +1,11 @@
 package utilities;
 
 import yahoofinance.Stock;
+import yahoofinance.quotes.stock.StockDividend;
 import yahoofinance.quotes.stock.StockQuote;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -18,6 +21,20 @@ public class StringUtils {
         sb.append(System.lineSeparator());
         sb.append("Daily change: ");
         sb.append(quote.getChange() + "%");
+
+        return sb.toString();
+    }
+
+    public static String dividendString (Stock stock) {
+        StringBuilder sb = new StringBuilder();
+        StockDividend dividend = stock.getDividend();;
+        sb.append("Dividend date: ");
+        sb.append(dividend.getPayDate().getTime());
+        sb.append(System.lineSeparator());
+        sb.append("Annual yield: ");
+        sb.append(dividend.getAnnualYield());
+        sb.append(" (" + dividend.getAnnualYieldPercent().setScale(2, RoundingMode.HALF_UP)+"%)");
+
 
         return sb.toString();
     }
