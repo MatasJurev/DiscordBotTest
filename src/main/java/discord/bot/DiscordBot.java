@@ -10,7 +10,7 @@ import java.sql.SQLException;
 public class DiscordBot {
 
     public static void init() throws LoginException, SQLException {
-        SQLiteDataSource.getConnection();
+        SQLiteDataSource.init();
 
         JDABuilder.createDefault(System.getenv("TOKEN"))
                 .addEventListeners(new Listener())
