@@ -94,7 +94,7 @@ public class StringUtils {
         StringBuilder statsString = new StringBuilder();
         while(result.next()) {
             statsString.append(
-                    "ID: "+ result.getInt("ID")+" - "+
+                    "ID: "+ result.getInt("ID")+" - $"+
                     result.getString    ("command")+" --- "+
                     result.getInt       ("count")+System.lineSeparator()
             );
