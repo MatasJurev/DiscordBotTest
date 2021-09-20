@@ -1,6 +1,7 @@
 package utilities;
 
 import yahoofinance.Stock;
+import yahoofinance.quotes.stock.StockDividend;
 import yahoofinance.quotes.stock.StockQuote;
 
 import java.math.RoundingMode;

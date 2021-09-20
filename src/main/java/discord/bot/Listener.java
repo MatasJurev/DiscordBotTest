@@ -194,7 +194,7 @@ public class Listener extends ListenerAdapter {
                     eb.setTitle("Top 10 Cryptocurrencies:");
                     eb.setFooter(sb.toString());
                     channel.sendMessage(eb.build()).queue();
-                     DatabaseUtils.addOrUpdateCommand(6, "top cryptos")
+                     DatabaseUtils.addOrUpdateCommand(6, "top cryptos");
                 }
                 try {
                     if (msg.startsWith("history") && !bot) {
