@@ -1,10 +1,16 @@
 package discord.bot;
 
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.MessageBuilder;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.ReadyEvent;
+import net.dv8tion.jda.api.events.interaction.ButtonClickEvent;
+import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.interactions.components.ActionRow;
+import net.dv8tion.jda.api.interactions.components.Button;
+import net.dv8tion.jda.api.interactions.components.ButtonStyle;
 import org.jetbrains.annotations.NotNull;
 import utilities.CryptoDataParser;
 import utilities.StringUtils;
@@ -14,6 +20,7 @@ import yahoofinance.YahooFinance;
 import yahoofinance.histquotes.HistoricalQuote;
 import yahoofinance.quotes.fx.FxQuote;
 
+//import java.awt.*;
 import java.awt.*;
 import java.io.IOException;
 import java.math.RoundingMode;
@@ -24,6 +31,14 @@ import java.util.List;
 import static utilities.StringUtils.convertDate;
 
 public class Listener extends ListenerAdapter {
+
+
+
+    public void onButtonClick(ButtonClickEvent event) {
+        if (event.getComponentId().equals("hello")) {
+            event.reply("Hello :)").queue();
+        }
+    }
 
     List<String> test = new ArrayList<>();
 
@@ -81,9 +96,11 @@ public class Listener extends ListenerAdapter {
         }
 
         try {
+
             if (msg.startsWith("$") && !bot) {
                 msg = msg.substring(1).toLowerCase();
                 EmbedBuilder eb = new EmbedBuilder();
+
                 eb.setColor(Color.red);
 
                  if (msg.startsWith("forex")) {
