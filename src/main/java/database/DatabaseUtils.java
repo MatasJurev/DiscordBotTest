@@ -48,4 +48,16 @@ public class DatabaseUtils {
         return resultString;
 
     }
+
+    public static double gettotal() throws SQLException {
+        String jdbcUrl = "jdbc:sqlite:database.db";
+        Connection connection = DriverManager.getConnection(jdbcUrl);
+        String select = "SELECT SUM(count) FROM commands;";
+        Statement statement = connection.createStatement();
+        double result = statement.executeQuery(select).getDouble("SUM(count)");
+        connection.close();
+        return result;
+
+    }
+
 }

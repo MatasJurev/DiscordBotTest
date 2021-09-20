@@ -1,5 +1,6 @@
 package utilities;
 
+import database.DatabaseUtils;
 import yahoofinance.Stock;
 import yahoofinance.quotes.stock.StockDividend;
 import yahoofinance.quotes.stock.StockQuote;
@@ -92,11 +93,13 @@ public class StringUtils {
 
     public static String TopComString(ResultSet result) throws SQLException {
         StringBuilder statsString = new StringBuilder();
+        double total = DatabaseUtils.gettotal();
         while(result.next()) {
             statsString.append(
-                    "ID: "+ result.getInt("ID")+" - $"+
-                    result.getString    ("command")+" --- "+
-                    result.getInt       ("count")+System.lineSeparator()
+                    " - $"+ result.getString    ("command")+" --- "+
+                    result.getInt       ("count")+" ("+
+                            Math.round((result.getDouble       ("count")/(total)*100))+"%)"+
+                            System.lineSeparator()
             );
 
         }
