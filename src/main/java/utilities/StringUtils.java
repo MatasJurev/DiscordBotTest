@@ -1,10 +1,8 @@
 package utilities;
 
 import yahoofinance.Stock;
-import yahoofinance.quotes.stock.StockDividend;
 import yahoofinance.quotes.stock.StockQuote;
 
-import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -50,6 +48,7 @@ public class StringUtils {
         sb.append(" USD");
         sb.append(",   Daily change: ");
         sb.append(quote.getChange() + "%");
+
         return sb.toString();
     }
 

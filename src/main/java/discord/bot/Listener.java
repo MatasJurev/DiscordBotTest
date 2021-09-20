@@ -1,5 +1,6 @@
 package discord.bot;
 
+import database.DatabaseUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.MessageBuilder;
 import net.dv8tion.jda.api.entities.*;
@@ -26,21 +27,15 @@ import java.io.IOException;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.sql.SQLException;
+import java.util.Collection;
 import java.util.List;
 
 import static utilities.StringUtils.convertDate;
 
+import static utilities.StringUtils.convertDate;
+
 public class Listener extends ListenerAdapter {
-
-
-
-    public void onButtonClick(ButtonClickEvent event) {
-        if (event.getComponentId().equals("hello")) {
-            event.reply("Hello :)").queue();
-        }
-    }
-
-    List<String> test = new ArrayList<>();
 
     @Override
     public void onReady(@NotNull ReadyEvent event) {
@@ -82,26 +77,22 @@ public class Listener extends ListenerAdapter {
             }                                           // otherwise it will default to their username. (User#getName())
 
             System.out.printf("(%s)[%s]<%s>: %s\n", guild.getName(), textChannel.getName(), name, msg);
-        } else if (event.isFromType(ChannelType.PRIVATE)) //If this message was sent to a PrivateChannel
+        }
+        else if (event.isFromType(ChannelType.PRIVATE)) //If this message was sent to a PrivateChannel
         {
             //The message was sent in a PrivateChannel.
             //In this example we don't directly use the privateChannel, however, be sure, there are uses for it!
-            PrivateChannel privateChannel = event.getPrivateChannel();
+            //PrivateChannel privateChannel = event.getPrivateChannel();
 
             System.out.printf("[PRIV]<%s>: %s\n", author.getName(), msg);
         }
 
-        else if (msg.equals("!display") && !bot) {
-            channel.sendMessage(test.toString()).queue();
-        }
-
         try {
-
             if (msg.startsWith("$") && !bot) {
                 msg = msg.substring(1).toLowerCase();
                 EmbedBuilder eb = new EmbedBuilder();
-
                 eb.setColor(Color.red);
+
 
                  if (msg.startsWith("forex")) {
                     String[] splitted = msg.split("\\s+",2);
@@ -113,6 +104,8 @@ public class Listener extends ListenerAdapter {
                     eb.setTitle(title.substring(0, 6) + " exchange rate:");
                     eb.setFooter(String.valueOf("Price: " + currency.getPrice()));
                     channel.sendMessage(eb.build()).queue();
+
+                    DatabaseUtils.addOrUpdateCommand(0, "forex");
                 }
                 else if (msg.startsWith("stock")) {
                     msg = msg.split("\\s+")[1];
@@ -121,6 +114,28 @@ public class Listener extends ListenerAdapter {
                     eb.setTitle(stock.getName()+" ("+stock.getSymbol()+") " +  "exchange rate:");
                     eb.setFooter(StringUtils.stockAsString(stock));
                     channel.sendMessage(eb.build()).queue();
+
+                    DatabaseUtils.addOrUpdateCommand(1, "stock");
+                }
+                else if (msg.startsWith("dividend")) {
+                    msg = msg.split("\\s+")[1];
+                    Stock stock = YahooFinance.get(msg.toUpperCase());
+
+                    eb.setTitle(stock.getName() + " (" + stock.getSymbol() + ") " + "Dividend:");
+                    eb.setFooter(StringUtils.dividendString(stock));
+                    channel.sendMessage(eb.build()).queue();
+
+                    DatabaseUtils.addOrUpdateCommand(2, "dividend");
+                }
+                else if (msg.startsWith("eps")) {
+                    msg = msg.split("\\s+")[1];
+                    Stock stock = YahooFinance.get(msg.toUpperCase());
+
+                    eb.setTitle(stock.getName() + " (" + stock.getSymbol() + ") " + "EPS:");
+                    eb.setFooter("Earnings Per Share: " + (stock.getStats().getEps()) + "$");
+                    channel.sendMessage(eb.build()).queue();
+
+                    DatabaseUtils.addOrUpdateCommand(3, "eps");
                 }
                 else if (msg.startsWith("dividend")) {
                      msg = msg.split("\\s+")[1];
@@ -144,6 +159,8 @@ public class Listener extends ListenerAdapter {
                     eb.setTitle(stock.getName()+ " exchange rate:");
                     eb.setFooter(StringUtils.cryptoAsString(stock));
                     channel.sendMessage(eb.build()).queue();
+
+                    DatabaseUtils.addOrUpdateCommand(4, "crypto");
                 }
                 else if(msg.startsWith("top stocks")) {
                     String[] symbols = WebscrapingUtils.getTopStocks();
@@ -160,6 +177,8 @@ public class Listener extends ListenerAdapter {
                     eb.setTitle("Top 10 stocks:");
                     eb.setFooter(sb.toString());
                     channel.sendMessage(eb.build()).queue();
+
+                    DatabaseUtils.addOrUpdateCommand(5, "top stocks");
                 }
                 else if(msg.startsWith("top cryptos")) {
                     StringBuilder sb = new StringBuilder();
@@ -175,6 +194,7 @@ public class Listener extends ListenerAdapter {
                     eb.setTitle("Top 10 Cryptocurrencies:");
                     eb.setFooter(sb.toString());
                     channel.sendMessage(eb.build()).queue();
+                     DatabaseUtils.addOrUpdateCommand(6, "top cryptos")
                 }
                 try {
                     if (msg.startsWith("history") && !bot) {
@@ -197,6 +217,7 @@ public class Listener extends ListenerAdapter {
                         eb.setTitle("Monthly Price History of " + stock.getName()+" ("+stock.getSymbol()+")");
                         eb.setFooter(String.valueOf(footer));
                         channel.sendMessage(eb.build()).queue();
+                        DatabaseUtils.addOrUpdateCommand(7, "history");
                     }
 
                 } catch (IOException ioException) {
@@ -215,6 +236,7 @@ public class Listener extends ListenerAdapter {
                     eb.setFooter(String.valueOf(footer));
                     eb.setColor(Color.red);
                     channel.sendMessage(eb.build()).queue();
+                    DatabaseUtils.addOrUpdateCommand(8, "options");
                 }
                 if (msg.startsWith("hello") && !bot) {
                     msg = msg.substring(1).toLowerCase();
@@ -227,26 +249,17 @@ public class Listener extends ListenerAdapter {
                     eb.setFooter(String.valueOf(footer));
                     eb.setColor(Color.red);
                     channel.sendMessage(eb.build()).queue();
+                    DatabaseUtils.addOrUpdateCommand(9, "hello");
+                }
+                else if(msg.startsWith("top commands")) {
+
                 }
             }
         }
-        catch (IOException e) {
+        catch (IOException | SQLException e) {
             e.printStackTrace();
         }
-
-
-
-
-
-
-
-
-
-
-
-
     }
-
 }
 
 
