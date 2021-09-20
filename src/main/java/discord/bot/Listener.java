@@ -21,6 +21,7 @@ import java.math.RoundingMode;
 import java.sql.SQLException;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import static utilities.StringUtils.convertDate;
 
@@ -227,7 +228,10 @@ public class Listener extends ListenerAdapter {
                     DatabaseUtils.addOrUpdateCommand(9, "hello");
                 }
                 else if(msg.startsWith("top commands")) {
-
+                    eb.setTitle("Top Commands Used");
+                    eb.setFooter(DatabaseUtils.getStats());
+                    eb.setColor(Color.red);
+                    channel.sendMessage(eb.build()).queue();
                 }
             }
         }

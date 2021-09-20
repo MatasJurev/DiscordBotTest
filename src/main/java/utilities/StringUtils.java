@@ -1,10 +1,13 @@
 package utilities;
 
+import database.DatabaseUtils;
 import yahoofinance.Stock;
 import yahoofinance.quotes.stock.StockDividend;
 import yahoofinance.quotes.stock.StockQuote;
 
 import java.math.RoundingMode;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -24,15 +27,16 @@ public class StringUtils {
         return sb.toString();
     }
 
-    public static String dividendString (Stock stock) {
+    public static String dividendString(Stock stock) {
         StringBuilder sb = new StringBuilder();
-        StockDividend dividend = stock.getDividend();;
+        StockDividend dividend = stock.getDividend();
+        ;
         sb.append("Dividend date: ");
         sb.append(dividend.getPayDate().getTime());
         sb.append(System.lineSeparator());
         sb.append("Annual yield: ");
         sb.append(dividend.getAnnualYield());
-        sb.append(" (" + dividend.getAnnualYieldPercent().setScale(2, RoundingMode.HALF_UP)+"%)");
+        sb.append(" (" + dividend.getAnnualYieldPercent().setScale(2, RoundingMode.HALF_UP) + "%)");
 
         return sb.toString();
     }
@@ -41,7 +45,7 @@ public class StringUtils {
         StringBuilder sb = new StringBuilder();
         StockQuote quote = stock.getQuote();
 
-        sb.append("-"+stock.getName());
+        sb.append("-" + stock.getName());
         sb.append(" (" + stock.getSymbol() + ")");
         sb.append(",   price: ");
         sb.append(quote.getPrice());
@@ -76,7 +80,7 @@ public class StringUtils {
         StringBuilder sb = new StringBuilder();
         StockQuote quote = crypto.getQuote();
 
-        sb.append("-"+crypto.getName());
+        sb.append("-" + crypto.getName());
         sb.append(",   price: ");
         sb.append(quote.getPrice());
         sb.append(" USD");
@@ -86,9 +90,27 @@ public class StringUtils {
         return sb.toString();
     }
 
-    public static String convertDate(Calendar cal){
+    public static String convertDate(Calendar cal) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        String formatDate=format.format(cal.getTime());
+        String formatDate = format.format(cal.getTime());
         return formatDate;
+    }
+
+    public static String TopComString(ResultSet result) throws SQLException {
+        StringBuilder statsString = new StringBuilder();
+        double total = DatabaseUtils.getTotal();
+        while (result.next()) {
+            statsString.append(
+                    "ID: " + result.getInt("ID") + " - $" +
+                            result.getString("command") + " --- " +
+                            result.getInt("count") + System.lineSeparator() +
+                    " - $" + result.getString("command") + " --- " +
+                            result.getInt("count") + " (" +
+                            Math.round((result.getDouble("count") / (total) * 100)) + "%)" +
+                            System.lineSeparator()
+            );
+        }
+
+        return statsString.toString();
     }
 }
