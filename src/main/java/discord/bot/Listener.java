@@ -137,20 +137,6 @@ public class Listener extends ListenerAdapter {
 
                     DatabaseUtils.addOrUpdateCommand(3, "eps");
                 }
-                else if (msg.startsWith("dividend")) {
-                     msg = msg.split("\\s+")[1];
-                     Stock stock = YahooFinance.get(msg.toUpperCase());
-                     eb.setTitle(stock.getName()+" ("+stock.getSymbol()+") " + "Dividend:");
-                     eb.setFooter(StringUtils.dividendString(stock));
-                     channel.sendMessage(eb.build()).queue();
-                 }
-                else if (msg.startsWith("eps")) {
-                     msg = msg.split("\\s+")[1];
-                     Stock stock = YahooFinance.get(msg.toUpperCase());
-                     eb.setTitle(stock.getName()+" ("+stock.getSymbol()+") " + "EPS:");
-                     eb.setFooter("Earnings Per Share: "+(stock.getStats().getEps())+"$");
-                     channel.sendMessage(eb.build()).queue();
-                 }
 
                 else if (msg.startsWith("crypto")) {
                     msg = msg.split("\\s+")[1];
@@ -224,19 +210,24 @@ public class Listener extends ListenerAdapter {
                     ioException.printStackTrace();
                 }
 
-                if (msg.startsWith("options") && !bot) {
+                if (msg.startsWith("help") && !bot) {
                     eb.setTitle("Possible Options are:");
                     StringBuilder footer = new StringBuilder();
-                    footer.append("$stock XXX...for Stocks "+System.lineSeparator());
-                    footer.append("$crypto XXX...for Crypto "+System.lineSeparator());
-                    footer.append("$forex XXX...for Currencies"+System.lineSeparator());
-                    footer.append("$history XXX ...to get monthly price history  "+System.lineSeparator());
-                    footer.append("$top stocks ... to get data about top 10 stocks  "+System.lineSeparator());
-                    footer.append("$top cryptos ... to get data about top 10 cryptos  "+System.lineSeparator());
+                    footer.append("[0]...$forex XXX.....to get Currency price data"+System.lineSeparator());
+                    footer.append("[1]...$stock XXX.....to get Stock price data "+System.lineSeparator());
+                    footer.append("[2]...$crypto XXX.....to get Crypto price data"+System.lineSeparator());
+                    footer.append("[3]...$dividend XXX.....to get Dividend data for a specific stock "+System.lineSeparator());
+                    footer.append("[4]...$eps XXX.....to get EPS for a specific stock "+System.lineSeparator());
+                    footer.append("[5]...$top stocks.....to get data about top 10 stocks  "+System.lineSeparator());
+                    footer.append("[6]...$top cryptos.....to get data about top 10 cryptos  "+System.lineSeparator());
+                    footer.append("[7]...$history XXX.....to get monthly price history  "+System.lineSeparator());
+                    footer.append("[8]...$help.....to get list of commands  "+System.lineSeparator());
+                    footer.append("[9]...$hello.....to get hi  "+System.lineSeparator());
+                    footer.append("[10]..$top commands.....to get list of top commands from database  "+System.lineSeparator());
                     eb.setFooter(String.valueOf(footer));
                     eb.setColor(Color.red);
                     channel.sendMessage(eb.build()).queue();
-                    DatabaseUtils.addOrUpdateCommand(8, "options");
+                    DatabaseUtils.addOrUpdateCommand(8, "help");
                 }
                 if (msg.startsWith("hello") && !bot) {
                     msg = msg.substring(1).toLowerCase();
@@ -252,7 +243,10 @@ public class Listener extends ListenerAdapter {
                     DatabaseUtils.addOrUpdateCommand(9, "hello");
                 }
                 else if(msg.startsWith("top commands")) {
-
+                    eb.setTitle("Top Commands Used");
+                    eb.setFooter(DatabaseUtils.getStats());
+                    eb.setColor(Color.red);
+                    channel.sendMessage(eb.build()).queue();
                 }
             }
         }

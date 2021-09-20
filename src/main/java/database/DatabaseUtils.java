@@ -1,5 +1,7 @@
 package database;
 
+import utilities.StringUtils;
+
 import java.sql.*;
 
 public class DatabaseUtils {
@@ -34,5 +36,16 @@ public class DatabaseUtils {
 
         System.out.println("Warning: No such entry in commands table with id " + id + " was found. Adding a new entry.");
         return 0;
+    }
+    public static String getStats() throws SQLException {
+        String jdbcUrl = "jdbc:sqlite:database.db";
+        Connection connection = DriverManager.getConnection(jdbcUrl);
+        String select = "SELECT ID, command, count FROM commands ORDER BY count DESC;";
+        Statement statement = connection.createStatement();
+        ResultSet result = statement.executeQuery(select);
+        String resultString = StringUtils.TopComString(result);
+        connection.close();
+        return resultString;
+
     }
 }

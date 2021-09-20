@@ -5,6 +5,8 @@ import yahoofinance.quotes.stock.StockDividend;
 import yahoofinance.quotes.stock.StockQuote;
 
 import java.math.RoundingMode;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -87,6 +89,21 @@ public class StringUtils {
 
         return sb.toString();
     }
+
+    public static String TopComString(ResultSet result) throws SQLException {
+        StringBuilder statsString = new StringBuilder();
+        while(result.next()) {
+            statsString.append(
+                    "ID: "+ result.getInt("ID")+" - "+
+                    result.getString    ("command")+" --- "+
+                    result.getInt       ("count")+System.lineSeparator()
+            );
+
+        }
+        return statsString.toString();
+
+    }
+
     public static String convertDate(Calendar cal){
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         String formatDate=format.format(cal.getTime());
