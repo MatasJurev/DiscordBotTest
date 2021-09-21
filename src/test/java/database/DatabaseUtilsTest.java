@@ -24,6 +24,7 @@ class DatabaseUtilsTest {
             expected += DatabaseUtils.getCountFromCommandsTable(statement, id);
         }
 
+        connection.close();
         assertEquals(expected, actual);
     }
 
