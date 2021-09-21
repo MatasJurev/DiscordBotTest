@@ -1,5 +1,2 @@
-# DiscordBotTest
-work in progress
-
-
-A project which final product will be a discord bot displaying various exchange rates between currencies and cryptocurrencies.
+#Exchange Rate Discord Bot
+## Discord bot displaying various exchange rates for stocks, currencies and cryptocurrencies.
