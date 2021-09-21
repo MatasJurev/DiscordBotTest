@@ -92,7 +92,7 @@ public class StringUtils {
 
     public static String TopComString(ResultSet result) throws SQLException {
         StringBuilder statsString = new StringBuilder();
-        double total = DatabaseUtils.gettotal();
+        double total = DatabaseUtils.getTotal("jdbc:sqlite:database.db");
         while(result.next()) {
             statsString.append(
                     " - $"+ result.getString    ("command")+" --- "+

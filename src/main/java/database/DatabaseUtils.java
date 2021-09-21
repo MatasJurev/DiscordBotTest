@@ -6,8 +6,7 @@ import java.sql.*;
 
 public class DatabaseUtils {
 
-    public static void addOrUpdateCommand(int id, String command) throws SQLException {
-        String jdbcUrl = "jdbc:sqlite:database.db";
+    public static void addOrUpdateCommand(int id, String command, String jdbcUrl) throws SQLException {
         Connection connection = DriverManager.getConnection(jdbcUrl);
         Statement statement = connection.createStatement();
 
@@ -49,15 +48,13 @@ public class DatabaseUtils {
 
     }
 
-    public static double gettotal() throws SQLException {
-        String jdbcUrl = "jdbc:sqlite:database.db";
+    public static double getTotal(String jdbcUrl) throws SQLException {
         Connection connection = DriverManager.getConnection(jdbcUrl);
         String select = "SELECT SUM(count) FROM commands;";
         Statement statement = connection.createStatement();
         double result = statement.executeQuery(select).getDouble("SUM(count)");
         connection.close();
         return result;
-
     }
 
 }
