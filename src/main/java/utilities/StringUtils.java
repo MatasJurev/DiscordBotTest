@@ -30,7 +30,7 @@ public class StringUtils {
     public static String dividendString(Stock stock) {
         StringBuilder sb = new StringBuilder();
         StockDividend dividend = stock.getDividend();
-        ;
+
         sb.append("Dividend date: ");
         sb.append(dividend.getPayDate().getTime());
         sb.append(System.lineSeparator());
@@ -96,21 +96,18 @@ public class StringUtils {
         return formatDate;
     }
 
-    public static String TopComString(ResultSet result) throws SQLException {
+    public static String topComString(ResultSet result) throws SQLException {
         StringBuilder statsString = new StringBuilder();
-        double total = DatabaseUtils.getTotal();
-        while (result.next()) {
+        double total = DatabaseUtils.getTotal("jdbc:sqlite:database.db");
+        while(result.next()) {
             statsString.append(
-                    "ID: " + result.getInt("ID") + " - $" +
-                            result.getString("command") + " --- " +
-                            result.getInt("count") + System.lineSeparator() +
-                    " - $" + result.getString("command") + " --- " +
-                            result.getInt("count") + " (" +
-                            Math.round((result.getDouble("count") / (total) * 100)) + "%)" +
+                    " - $"+ result.getString    ("command")+" --- "+
+                            result.getInt       ("count")+" ("+
+                            Math.round((result.getDouble("count") / total * 100)) + "%)"+
                             System.lineSeparator()
             );
-        }
 
+        }
         return statsString.toString();
     }
 }

@@ -1,16 +1,12 @@
 package database;
 
-import utilities.MapUtils;
 import utilities.StringUtils;
 
 import java.sql.*;
-import java.util.HashMap;
-import java.util.Map;
 
 public class DatabaseUtils {
 
-    public static double getTotal() throws SQLException {
-        String jdbcUrl = "jdbc:sqlite:database.db";
+    public static double getTotal(String jdbcUrl) throws SQLException {
         Connection connection = DriverManager.getConnection(jdbcUrl);
         String select = "SELECT SUM(count) FROM commands;";
         Statement statement = connection.createStatement();
@@ -25,7 +21,7 @@ public class DatabaseUtils {
         String select = "SELECT ID, command, count FROM commands ORDER BY count DESC;";
         Statement statement = connection.createStatement();
         ResultSet result = statement.executeQuery(select);
-        String resultString = StringUtils.TopComString(result);
+        String resultString = StringUtils.topComString(result);
         connection.close();
 
         return resultString;
@@ -51,8 +47,7 @@ public class DatabaseUtils {
         return answer;
     }*/
 
-    public static void addOrUpdateCommand(int id, String command) throws SQLException {
-        String jdbcUrl = "jdbc:sqlite:database.db";
+    public static void addOrUpdateCommand(int id, String command, String jdbcUrl) throws SQLException {
         Connection connection = DriverManager.getConnection(jdbcUrl);
         Statement statement = connection.createStatement();
 
@@ -67,7 +62,7 @@ public class DatabaseUtils {
         connection.close();
     }
 
-    private static int getCountFromCommandsTable(Statement statement, int id) throws SQLException {
+    public static int getCountFromCommandsTable(Statement statement, int id) throws SQLException {
         String sql = "SELECT ID, count FROM commands;";
         ResultSet rs = statement.executeQuery(sql);
 

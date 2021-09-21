@@ -95,7 +95,7 @@ public class Listener extends ListenerAdapter {
                     eb.setFooter("Price: " + currency.getPrice());
                     channel.sendMessage(eb.build()).queue();
 
-                    DatabaseUtils.addOrUpdateCommand(0, "forex");
+                    DatabaseUtils.addOrUpdateCommand(0, "forex", "jdbc:sqlite:database.db");
                 }
                 else if (msg.startsWith("stock")) {
                     msg = msg.split("\\s+")[1];
@@ -105,7 +105,7 @@ public class Listener extends ListenerAdapter {
                     eb.setFooter(StringUtils.stockAsString(stock));
                     channel.sendMessage(eb.build()).queue();
 
-                    DatabaseUtils.addOrUpdateCommand(1, "stock");
+                    DatabaseUtils.addOrUpdateCommand(1, "stock", "jdbc:sqlite:database.db");
                 }
                 else if (msg.startsWith("dividend")) {
                     msg = msg.split("\\s+")[1];
@@ -115,7 +115,7 @@ public class Listener extends ListenerAdapter {
                     eb.setFooter(StringUtils.dividendString(stock));
                     channel.sendMessage(eb.build()).queue();
 
-                    DatabaseUtils.addOrUpdateCommand(2, "dividend");
+                    DatabaseUtils.addOrUpdateCommand(2, "dividend", "jdbc:sqlite:database.db");
                 }
                 else if (msg.startsWith("eps")) {
                     msg = msg.split("\\s+")[1];
@@ -125,7 +125,7 @@ public class Listener extends ListenerAdapter {
                     eb.setFooter("Earnings Per Share: " + (stock.getStats().getEps()) + "$");
                     channel.sendMessage(eb.build()).queue();
 
-                    DatabaseUtils.addOrUpdateCommand(3, "eps");
+                    DatabaseUtils.addOrUpdateCommand(3, "eps", "jdbc:sqlite:database.db");
                 }
                 else if (msg.startsWith("crypto")) {
                     msg = msg.split("\\s+")[1];
@@ -135,7 +135,7 @@ public class Listener extends ListenerAdapter {
                     eb.setFooter(StringUtils.cryptoAsString(stock));
                     channel.sendMessage(eb.build()).queue();
 
-                    DatabaseUtils.addOrUpdateCommand(4, "crypto");
+                    DatabaseUtils.addOrUpdateCommand(4, "crypto", "jdbc:sqlite:database.db");
                 }
                 else if (msg.startsWith("top stocks")) {
                     String[] symbols = WebscrapingUtils.getTopStocks();
@@ -153,7 +153,7 @@ public class Listener extends ListenerAdapter {
                     eb.setFooter(sb.toString());
                     channel.sendMessage(eb.build()).queue();
 
-                    DatabaseUtils.addOrUpdateCommand(5, "top stocks");
+                    DatabaseUtils.addOrUpdateCommand(5, "top stocks", "jdbc:sqlite:database.db");
                 }
                 else if (msg.startsWith("top cryptos")) {
                     StringBuilder sb = new StringBuilder();
@@ -170,7 +170,7 @@ public class Listener extends ListenerAdapter {
                     eb.setFooter(sb.toString());
                     channel.sendMessage(eb.build()).queue();
 
-                    DatabaseUtils.addOrUpdateCommand(6, "top cryptos");
+                    DatabaseUtils.addOrUpdateCommand(6, "top cryptos", "jdbc:sqlite:database.db");
                 }
                 else if (msg.startsWith("history")) {
                     msg = msg.split("\\s+")[1];
@@ -194,7 +194,7 @@ public class Listener extends ListenerAdapter {
                     eb.setFooter(String.valueOf(footer));
                     channel.sendMessage(eb.build()).queue();
 
-                    DatabaseUtils.addOrUpdateCommand(7, "history");
+                    DatabaseUtils.addOrUpdateCommand(7, "history", "jdbc:sqlite:database.db");
                 }
                 else if (msg.startsWith("options")) {
                     eb.setTitle("Possible Options are:");
@@ -212,7 +212,7 @@ public class Listener extends ListenerAdapter {
                     eb.setColor(Color.red);
                     channel.sendMessage(eb.build()).queue();
 
-                    DatabaseUtils.addOrUpdateCommand(8, "options");
+                    DatabaseUtils.addOrUpdateCommand(8, "options", "jdbc:sqlite:database.db");
                 }
                 else if (msg.startsWith("hello")) {
                     StringBuilder footer = new StringBuilder();
@@ -225,7 +225,7 @@ public class Listener extends ListenerAdapter {
                     eb.setColor(Color.red);
                     channel.sendMessage(eb.build()).queue();
 
-                    DatabaseUtils.addOrUpdateCommand(9, "hello");
+                    DatabaseUtils.addOrUpdateCommand(9, "hello", "jdbc:sqlite:database.db");
                 }
                 else if(msg.startsWith("top commands")) {
                     eb.setTitle("Top Commands Used");

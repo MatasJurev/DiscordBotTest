@@ -8,10 +8,6 @@ public class StocksDataParser {
 
     public static String[] getSymbols(String data) {
 
-        /*
-        TODO: optimize the use of lists and arrays
-         */
-
         //String[] split = data.split("[\":,{}]");
         String[] split = data.split("[\\[\\]\":,{}<>=]");
         List<String> parsedData = new LinkedList();

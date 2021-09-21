@@ -8,7 +8,7 @@ public class CryptoDataParser {
 
     public static String[] getSymbols(String data) {
 
-        String[] split = data.split("[\\[\\]\":,{}<>=]");
+        String[] split = data.split("[\\[\\]\":,{}<>=\\s+]");
         List<String> parsedData = new LinkedList();
         List<String> answerList = new LinkedList();
 
