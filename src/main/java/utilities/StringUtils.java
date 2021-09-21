@@ -1,6 +1,5 @@
 package utilities;
 
-import database.DatabaseUtils;
 import yahoofinance.Stock;
 import yahoofinance.quotes.stock.StockDividend;
 import yahoofinance.quotes.stock.StockQuote;
@@ -37,7 +36,6 @@ public class StringUtils {
         sb.append(dividend.getAnnualYield());
         sb.append(" (" + dividend.getAnnualYieldPercent().setScale(2, RoundingMode.HALF_UP)+"%)");
 
-
         return sb.toString();
     }
 
@@ -45,14 +43,13 @@ public class StringUtils {
         StringBuilder sb = new StringBuilder();
         StockQuote quote = stock.getQuote();
 
-        sb.append("-"+stock.getName());
+        sb.append("-" + stock.getName());
         sb.append(" (" + stock.getSymbol() + ")");
         sb.append(",   price: ");
         sb.append(quote.getPrice());
         sb.append(" USD");
         sb.append(",   Daily change: ");
         sb.append(quote.getChange() + "%");
-
         return sb.toString();
     }
 
@@ -112,5 +109,4 @@ public class StringUtils {
         String formatDate=format.format(cal.getTime());
         return formatDate;
     }
-
 }

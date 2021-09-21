@@ -22,6 +22,7 @@ import java.math.RoundingMode;
 import java.sql.SQLException;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import static utilities.StringUtils.convertDate;
 
@@ -62,6 +63,9 @@ public class Listener extends ListenerAdapter {
         }
         else if (event.isFromType(ChannelType.PRIVATE))
         {
+            //The message was sent in a PrivateChannel.
+            //In this example we don't directly use the privateChannel, however, be sure, there are uses for it!
+            //PrivateChannel privateChannel = event.getPrivateChannel();
 
             System.out.printf("[PRIV]<%s>: %s\n", author.getName(), msg);
         }
@@ -209,7 +213,6 @@ public class Listener extends ListenerAdapter {
                     DatabaseUtils.addOrUpdateCommand(8, "help");
                 }
                 if (msg.startsWith("hello") && !bot) {
-                    msg = msg.substring(1).toLowerCase();
                     StringBuilder footer = new StringBuilder();
                     footer.append("oooo    oooo    88oooo88"+System.lineSeparator());
                     footer.append(" 888      888          888    "+System.lineSeparator());
@@ -219,6 +222,7 @@ public class Listener extends ListenerAdapter {
                     eb.setFooter(String.valueOf(footer));
                     eb.setColor(Color.red);
                     channel.sendMessage(eb.build()).queue();
+
                     DatabaseUtils.addOrUpdateCommand(9, "hello");
                 }
                 if(msg.startsWith("top commands")) {
@@ -234,5 +238,3 @@ public class Listener extends ListenerAdapter {
         }
     }
 }
-
-
