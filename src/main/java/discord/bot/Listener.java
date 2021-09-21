@@ -63,10 +63,6 @@ public class Listener extends ListenerAdapter {
         }
         else if (event.isFromType(ChannelType.PRIVATE))
         {
-            //The message was sent in a PrivateChannel.
-            //In this example we don't directly use the privateChannel, however, be sure, there are uses for it!
-            //PrivateChannel privateChannel = event.getPrivateChannel();
-
             System.out.printf("[PRIV]<%s>: %s\n", author.getName(), msg);
         }
 
@@ -75,7 +71,6 @@ public class Listener extends ListenerAdapter {
                 msg = msg.substring(1).toLowerCase();
                 EmbedBuilder eb = new EmbedBuilder();
                 eb.setColor(Color.red);
-
 
                  if (msg.startsWith("forex")) {
                     String[] splitted = msg.split("\\s+",2);
@@ -163,7 +158,8 @@ public class Listener extends ListenerAdapter {
                     eb.setTitle("Top 10 Cryptocurrencies:");
                     eb.setFooter(sb.toString());
                     channel.sendMessage(eb.build()).queue();
-                     DatabaseUtils.addOrUpdateCommand(6, "top cryptos");
+
+                    DatabaseUtils.addOrUpdateCommand(6, "top cryptos");
                 }
                 try {
                     if (msg.startsWith("history") && !bot) {

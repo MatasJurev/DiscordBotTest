@@ -1,5 +1,6 @@
 package utilities;
 
+import database.DatabaseUtils;
 import yahoofinance.Stock;
 import yahoofinance.quotes.stock.StockDividend;
 import yahoofinance.quotes.stock.StockQuote;
@@ -29,6 +30,7 @@ public class StringUtils {
     public static String dividendString (Stock stock) {
         StringBuilder sb = new StringBuilder();
         StockDividend dividend = stock.getDividend();;
+
         sb.append("Dividend date: ");
         sb.append(dividend.getPayDate().getTime());
         sb.append(System.lineSeparator());
@@ -98,7 +100,6 @@ public class StringUtils {
                     Math.round((result.getDouble       ("count")/(total)*100))+"%)"+
                     System.lineSeparator()
             );
-
         }
         return statsString.toString();
 

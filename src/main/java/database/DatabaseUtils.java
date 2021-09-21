@@ -22,7 +22,7 @@ public class DatabaseUtils {
         connection.close();
     }
 
-    private static int getCountFromCommandsTable(Statement statement, int id) throws SQLException {
+    public static int getCountFromCommandsTable(Statement statement, int id) throws SQLException {
         String sql = "SELECT ID, count FROM commands;";
         ResultSet rs = statement.executeQuery(sql);
 
