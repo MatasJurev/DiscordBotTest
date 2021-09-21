@@ -28,7 +28,7 @@ class DatabaseUtilsTest {
     }
 
     @Test
-    void addOrUpdateCommand() throws SQLException {
+    void addOrUpdateCommand() throws SQLException, InterruptedException {
         Connection connection = DriverManager.getConnection("jdbc:sqlite:mockDB.db");
         Statement statement = connection.createStatement();
 

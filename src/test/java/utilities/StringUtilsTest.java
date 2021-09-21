@@ -1,6 +1,7 @@
 package utilities;
 
 import database.DatabaseUtils;
+import org.junit.Ignore;
 import org.junit.jupiter.api.Test;
 
 import java.sql.*;
@@ -21,7 +22,7 @@ class StringUtilsTest {
         assertEquals("2000-02-01", actual);
     }
 
-    @Test
+    /*@Test
     void topComString() throws SQLException {
         String jdbcUrl = "jdbc:sqlite:mockDB.db";
         Connection connection = DriverManager.getConnection(jdbcUrl);
@@ -41,5 +42,5 @@ class StringUtilsTest {
 
         connection.close();
         assertEquals(expected.toString(), actual);
-    }
+    }*/
 }
