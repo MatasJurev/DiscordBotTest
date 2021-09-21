@@ -14,7 +14,8 @@ import yahoofinance.Stock;
 import yahoofinance.YahooFinance;
 import yahoofinance.histquotes.HistoricalQuote;
 import yahoofinance.quotes.fx.FxQuote;
-
+import org.slf4j.impl.StaticLoggerBinder;
+import org.slf4j.impl.StaticMDCBinder;
 import java.awt.*;
 import java.io.IOException;
 import java.math.RoundingMode;
