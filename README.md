@@ -11,7 +11,7 @@ $stock XXX.........to get Stock price data
 $crypto XXX........to get Crypto price data
 $dividend XXX......to get Dividend data for a specific stock 
 $eps XXX...........to get EPS for a specific stock
-$top stocks.........to get data about top 10 stocks 
+$top stocks........to get data about top 10 stocks 
 $top cryptos.......to get data about top 10 cryptos  
 $history XXX.......to get monthly price history 
 $help..............to get list of commands 
