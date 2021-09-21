@@ -98,8 +98,8 @@ public class StringUtils {
             statsString.append(
                     " - $"+ result.getString    ("command")+" --- "+
                     result.getInt       ("count")+" ("+
-                            Math.round((result.getDouble       ("count")/(total)*100))+"%)"+
-                            System.lineSeparator()
+                    Math.round((result.getDouble       ("count")/(total)*100))+"%)"+
+                    System.lineSeparator()
             );
 
         }
