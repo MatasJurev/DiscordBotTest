@@ -21,7 +21,6 @@ import java.math.RoundingMode;
 import java.sql.SQLException;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 import static utilities.StringUtils.convertDate;
 
@@ -35,46 +34,33 @@ public class Listener extends ListenerAdapter {
 
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
-        //JDA jda = event.getJDA();                       //JDA, the core of the api.
-        //long responseNumber = event.getResponseNumber();//The amount of discord events that JDA has received since the last reconnect.
 
-        //Event specific information
-        User author = event.getAuthor();                //The user that sent the message
-        Message message = event.getMessage();           //The message that was received.
-        MessageChannel channel = event.getChannel();    //This is the MessageChannel that the message was sent to.
+        User author = event.getAuthor();
+        Message message = event.getMessage();
+        MessageChannel channel = event.getChannel();
 
-        String msg = message.getContentDisplay();              //This returns a human readable version of the Message. Similar to
-        // what you would see in the client.
+        String msg = message.getContentDisplay();
 
-        boolean bot = author.isBot();                    //This boolean is useful to determine if the User that
-        // sent the Message is a BOT or not!
+        boolean bot = author.isBot();
 
-        if (event.isFromType(ChannelType.TEXT))         //If this message was sent to a Guild TextChannel
+        if (event.isFromType(ChannelType.TEXT))
         {
-            //Because we now know that this message was sent in a Guild, we can do guild specific things
-            // Note, if you don't check the ChannelType before using these methods, they might return null due
-            // the message possibly not being from a Guild!
-
-            Guild guild = event.getGuild();             //The Guild that this message was sent in. (note, in the API, Guilds are Servers)
-            TextChannel textChannel = event.getTextChannel(); //The TextChannel that this message was sent to.
-            Member member = event.getMember();          //This Member that sent the message. Contains Guild specific information about the User!
+            Guild guild = event.getGuild();
+            TextChannel textChannel = event.getTextChannel();
+            Member member = event.getMember();
 
             String name;
             if (message.isWebhookMessage()) {
-                name = author.getName();                //If this is a Webhook message, then there is no Member associated
-            }                                           // with the User, thus we default to the author for name.
+                name = author.getName();
+            }
             else {
-                name = member.getEffectiveName();       //This will either use the Member's nickname if they have one,
-            }                                           // otherwise it will default to their username. (User#getName())
+                name = member.getEffectiveName();
+            }
 
             System.out.printf("(%s)[%s]<%s>: %s\n", guild.getName(), textChannel.getName(), name, msg);
         }
-        else if (event.isFromType(ChannelType.PRIVATE)) //If this message was sent to a PrivateChannel
+        else if (event.isFromType(ChannelType.PRIVATE))
         {
-            //The message was sent in a PrivateChannel.
-            //In this example we don't directly use the privateChannel, however, be sure, there are uses for it!
-            //PrivateChannel privateChannel = event.getPrivateChannel();
-
             System.out.printf("[PRIV]<%s>: %s\n", author.getName(), msg);
         }
 

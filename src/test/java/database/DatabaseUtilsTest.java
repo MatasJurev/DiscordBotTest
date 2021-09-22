@@ -29,7 +29,7 @@ class DatabaseUtilsTest {
     }
 
     @Test
-    void addOrUpdateCommand() throws SQLException, InterruptedException {
+    void addOrUpdateCommand() throws SQLException {
         Connection connection = DriverManager.getConnection("jdbc:sqlite:mockDB.db");
         Statement statement = connection.createStatement();
 

@@ -6,6 +6,12 @@ import java.sql.*;
 
 public class DatabaseUtils {
 
+    /**
+     *
+     * @param jdbcUrl
+     * @return sum of all the commands' counts
+     * @throws SQLException
+     */
     public static double getTotal(String jdbcUrl) throws SQLException {
         Connection connection = DriverManager.getConnection(jdbcUrl);
         String select = "SELECT SUM(count) FROM commands;";
@@ -15,6 +21,12 @@ public class DatabaseUtils {
         return result;
     }
 
+
+    /**
+     * connects to database and gets top used commands by the bot as a String
+     * @return top used commands by the bot as a String
+     * @throws SQLException
+     */
     public static String getStats() throws SQLException {
         String jdbcUrl = "jdbc:sqlite:database.db";
         Connection connection = DriverManager.getConnection(jdbcUrl);
@@ -27,26 +39,14 @@ public class DatabaseUtils {
         return resultString;
     }
 
-    /*public static Map<String, Integer> getTopCommands() throws SQLException {
-        Map<String, Integer> answer = new HashMap<>();
 
-        String jdbcUrl = "jdbc:sqlite:database.db";
-        Connection connection = DriverManager.getConnection(jdbcUrl);
-        Statement statement = connection.createStatement();
-
-        String sql = "SELECT count, command FROM commands ORDER BY count DESC;";
-        ResultSet rs = statement.executeQuery(sql);
-
-        while (rs.next()) {
-            int count = rs.getInt("count");
-            String command = rs.getString("command");
-            answer.put(command, count);
-        }
-
-        connection.close();
-        return answer;
-    }*/
-
+    /**
+     * adds or updates a certain command in the database
+     * @param id
+     * @param command
+     * @param jdbcUrl
+     * @throws SQLException
+     */
     public static void addOrUpdateCommand(int id, String command, String jdbcUrl) throws SQLException {
         Connection connection = DriverManager.getConnection(jdbcUrl);
         Statement statement = connection.createStatement();
@@ -62,6 +62,14 @@ public class DatabaseUtils {
         connection.close();
     }
 
+
+    /**
+     *
+     * @param statement
+     * @param id
+     * @return from database the amount of times a command with the certain id was used
+     * @throws SQLException
+     */
     public static int getCountFromCommandsTable(Statement statement, int id) throws SQLException {
         String sql = "SELECT ID, count FROM commands;";
         ResultSet rs = statement.executeQuery(sql);
