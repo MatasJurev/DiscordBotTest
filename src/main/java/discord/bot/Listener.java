@@ -22,7 +22,6 @@ import java.math.RoundingMode;
 import java.sql.SQLException;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 import static utilities.StringUtils.convertDate;
 

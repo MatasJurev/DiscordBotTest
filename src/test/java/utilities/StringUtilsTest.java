@@ -1,10 +1,7 @@
 package utilities;
 
-import database.DatabaseUtils;
-import org.junit.Ignore;
 import org.junit.jupiter.api.Test;
 
-import java.sql.*;
 import java.util.Calendar;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -15,11 +12,11 @@ class StringUtilsTest {
     void convertDate() {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.YEAR, 2000);
-        calendar.set(Calendar.MONTH, 1);
+        calendar.set(Calendar.MONTH, 0);
         calendar.set(Calendar.DAY_OF_MONTH, 1);
         String actual = StringUtils.convertDate(calendar);
 
-        assertEquals("2000-02-01", actual);
+        assertEquals("2000-01-01", actual);
     }
 
     /*@Test

@@ -6,12 +6,17 @@ import java.util.List;
 
 public class StocksDataParser {
 
+    /**
+     * Parses all the symbols of stocks from the json String
+     * @param data
+     * @return symbols of stocks
+     */
     public static String[] getSymbols(String data) {
 
         //String[] split = data.split("[\":,{}]");
         String[] split = data.split("[\\[\\]\":,{}<>=]");
-        List<String> parsedData = new LinkedList();
-        List<String> answerList = new LinkedList();
+        List<String> parsedData = new LinkedList<>();
+        List<String> answerList = new LinkedList<>();
 
         Collections.addAll(parsedData, split);
         parsedData.removeIf(item -> item == null || "".equals(item));

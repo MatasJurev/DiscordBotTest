@@ -6,6 +6,11 @@ import java.util.*;
 
 public class CryptoDataParser {
 
+    /**
+     * parses cryptocurrencies' symbols from the String
+     * @param data
+     * @return cryptocurrencies' symbols as a String array
+     */
     public static String[] getSymbols(String data) {
 
         String[] split = data.split("[\\[\\]\":,{}<>=\\s+]");
@@ -19,15 +24,18 @@ public class CryptoDataParser {
             answerList.add(parsedData.get(i).toUpperCase() + "-USD");
         }
 
-        //remove possible duplicates
-        //answerList = answerList.stream().distinct().collect(Collectors.toList());
-
         String[] answer = new String[answerList.size()];
         answer = answerList.toArray(answer);
 
         return answer;
     }
 
+
+    /**
+     *
+     * @param cryptos
+     * @return a list of top 10 cryptocurrencies sorted by their market cap
+     */
     public static List getTop10(Collection<Stock> cryptos) {
         List<Stock> top10 = new ArrayList(cryptos);
 

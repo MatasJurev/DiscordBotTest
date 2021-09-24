@@ -11,6 +11,7 @@
     <properties>
         <maven.compiler.source>16</maven.compiler.source>
         <maven.compiler.target>16</maven.compiler.target>
+        <jmh.version>1.21</jmh.version>
     </properties>
 
     <dependencies>
@@ -96,7 +97,21 @@
             <scope>compile</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.openjdk.jmh</groupId>
+            <artifactId>jmh-core</artifactId>
+            <version>${jmh.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.openjdk.jmh</groupId>
+            <artifactId>jmh-generator-annprocess</artifactId>
+            <version>${jmh.version}</version>
+        </dependency>
+
+
     </dependencies>
+
 
     <repositories>
         <repository>
